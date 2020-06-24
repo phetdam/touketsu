@@ -2,7 +2,8 @@
 #
 # 06-23-2020
 #
-# initial creation. added /build and __pycache__ to .gitignore.
+# initial creation. added /build, /dist,  __pycache__ to .gitignore.
 
 /build
+/dist
 **/__pycache__

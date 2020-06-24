@@ -4,9 +4,9 @@
 #
 # 06-23-2020
 #
-# initial creation. maybe i should use setuptools instead of distutils.
+# initial creation. changed from distutils to setuptools
 
-from distutils.core import setup
+from setuptools import setup
 
 _DESC = ("A package for creating classes that disallow dynamic attribute "
          "creation.")

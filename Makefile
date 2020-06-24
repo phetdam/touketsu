@@ -25,6 +25,10 @@ clean:
 build:
 	@$(PYTHON) setup.py build $(SETUP_FLAGS)
 
+# make source and wheel distribution for touketsu
+dist:
+	@$(PYTHON) setup.py sdist bdist_wheel
+
 # install in site-packages directory for importing. builds if necessary.
 install: build
 	@$(PYTHON) setup.py install
