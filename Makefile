@@ -4,7 +4,7 @@
 #
 # 06-23-2020
 #
-# initial creation.
+# initial creation. essentially copied from the shizuka project.
 
 CC          = gcc
 CFLAGS      =
