@@ -4,7 +4,8 @@
 #
 # 06-23-2020
 #
-# initial creation. added FrozenClass implementation.
+# initial creation. added FrozenClass implementation. added multiple inheritance
+# example to illustrate how to use the FrozenClass implementation.
 
 class FrozenClass:
     """A mixin class to disallow dynamic attribute creation.
@@ -27,23 +28,30 @@ class FrozenClass:
                self.d = d
 
     If we want to disable dynamic instance attribute creation for ``c_class``,
-    we could define ``c_class`` as follows:
+    we could define ``c_class`` as follows [#]_:
 
     .. code:: python
 
        class c_class(a_class, b_class, FrozenClass):
 
            def __init__(self, a, b = "bbb", c = "ccc", d = "ddd"):
-               self.a = a
-               self.b = b
-               self.c = c
-               self.d = d
+               a_class.__init__(self, a, b = b)
+               b_class.__init__(self, c = c, d = d)
                self._freeze()
 
     The :meth:``_freeze`` call will disable dynamic instance attribute creation.
     Any attempts to create an instance attribute at runtime will result in an
     :class:`AttributeError`. Note that :meth:``_freeze`` should be treated as an
     irreversible operation.
+
+    .. [#] Note that we opt to use explicit :meth:`__init__` calls due to the
+       different :meth:`__init__` signatures. Cooperative subclassing by calling
+       :meth:`super` could also be used, but only if we allow each
+       :meth:`__init__` signature to support variable arguments and keyword
+       arguments. Please see `this StackOverflow post`__ for a nice explanation.
+
+    .. __: https://stackoverflow.com/questions/26927571/multiple-inheritance-in
+       -python3-with-different-signatures
     """
     _is_frozen = False
 
