@@ -6,7 +6,7 @@
 #
 # initial creation. maybe i should use setuptools instead of distutils.
 
-from disutils.core import setup
+from distutils.core import setup
 
 _DESC = ("A package for creating classes that disallow dynamic attribute "
          "creation.")
