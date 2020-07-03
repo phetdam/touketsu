@@ -8,6 +8,10 @@
 #
 # Changelog:
 #
+# 07-02-2020
+#
+# make change to autodoc_default_options to not include undocumented members.
+#
 # 06-30-2020
 #
 # initial creation by sphinx-quickstart. added changelog, autodoc, autosummary,
@@ -59,14 +63,13 @@ exclude_patterns = []
 # -- autodoc configuration ---------------------------------------------------
 
 # set default options for autodoc directives. include __repr__ special member
-# and any private members (names prepended with _), show class inheritance,
-# and list any members that do not have an associated docstring.
+# and any private members (names prepended with _), show class inheritance.
 #
 # note: since ignore-module-all is not set, only the members in __all__ in
-# __init__.py will be looked for and their order will be maintained.
+# __init__.py will be looked for and their order will be maintained. since
+# undoc-members was not specified, members with no docstring are skipped.
 autodoc_default_options = {
     "members": True,
-    "undoc-members": True,
     "private-members": True,
     "show-inheritance": True,
     "special-members": "__repr__"
