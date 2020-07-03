@@ -6,7 +6,7 @@
 
    add intro.rst, examples.rst, and :titlesonly: option to toctree. changed
    examples reference to user guide reference since examples.rst has been
-   renamed to user_guide.rst.
+   renamed to user_guide.rst. change toctree caption to "Table of contents".
 
    06-30-2020
 
@@ -20,7 +20,7 @@ Welcome to touketsu's documentation!
 
 .. toctree::
    :maxdepth: 4
-   :caption: Package contents
+   :caption: Table of contents
    :titlesonly:
    :hidden:
 
