@@ -11,7 +11,9 @@
 # 07-02-2020
 #
 # make change to autodoc_default_options to not include undocumented members
-# plus correct missing assignment of _delim (used - instead of = oops).
+# plus correct missing assignment of _delim (used - instead of = oops). added
+# html_logo option to point to new (kind of sh*tty) logo. also add option for
+# sphinx_rtd_theme to change sidebar header color (looks more ice-like).
 #
 # 06-30-2020
 #
@@ -97,7 +99,13 @@ html_theme = "sphinx_rtd_theme"
 extensions.append(html_theme)
 
 # no HTML theme options
-html_theme_options = {}
+html_theme_options = {
+    # color for the sidebar navigation header
+    "style_nav_header_background": "#a2c4cd"
+}
+
+# file for image to be used in sidebar logo (must not exceed 200 px in width)
+html_logo = "./touketsu_logo.png"
 
 # use emacs style for pygments highlighting in code blocks or inline code
 pygments_style = "emacs"
