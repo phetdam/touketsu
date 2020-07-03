@@ -6,7 +6,8 @@
 
    initial creation with touch. added document title and section titles. renamed
    file from examples.rst to user_guide.rst. statr using ~ to get shortened ref
-   links that only use the top-level object name.
+   links that only use the top-level object name. added more examples, starting
+   with simple mixin use of NDClass and FrozenClass (in progress).
 
 User Guide
 ==========
@@ -28,11 +29,104 @@ Although it is possible to mix in :class:`~touketsu.core.NDClass` or :class:`~to
 
    Only mix into a common parent class, and for each of its child classes, call :meth:`~touketsu.core.NDClass._make_nondynamic` or :meth:`~touketsu.core.FrozenClass._freeze` as necessary as the final statement of each child class's :meth:`__init__` method.
 
+.. caution::
+
+   Mixing in :class:`~touketsu.core.NDClass` or :class:`~touketsu.core.FrozenClass` should involve either one or the other, but not both. Mixing in :class:`~touketsu.core.NDClass` and calling :meth:`~touketsu.core.NDClass._make_nondynamic` in the :meth:`__init__` method of the subclass results in the subclass acquiring a strict subset of the restrictions acquired from mixing in :class:`~touketsu.core.FrozenClass` and calling :meth:`~touketsu.core.FrozenClass._freeze` in the :meth:`__init__` method of the subclass. Therefore, mixing in both classes and enforcing the restrictions of each by calling both :meth:`~touketsu.core.NDClass._make_nondynamic` and :meth:`~touketsu.core.FrozenClass._freeze` in the subclass :meth:`__init__` method is simply unnecessary and bad practice.
+
+Simple mixin use
+----------------
+
+The easiest way to get started with using the :class:`~touketsu.core.NDClass` and :class:`~touketsu.core.FrozenClass` mixins is with a simple example. Suppose we have a class ``a_class`` defined as follows:
+
+.. code:: python
+
+   class a_class:
+
+       def __init__(self, a = "a", b = "b", c = "c"):
+           self.a = a
+	   self.b = b
+	   self.c = c
+
+       def as_tuple(self): return (self.a, self.b, self.c)
+
+If we were to define this in the Python interpreter, create an ``a_class`` instance, we could observe the somewhat surprising results shown in block below.
+
+>>> aa = a_class()
+>>> aa.a
+'a'
+>>> aa.as_tuple()
+('a', 'b', 'c')
+>>> aa.new_ting
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'a_class' object has no attribute 'new_ting'
+>>> aa.new_ting = 19203
+>>> aa.new_ting
+19203
+
+This is odd--our definition of ``a_class`` did not include the instance attribute ``new_ting``, which we created dynamically at runtime when we performed the assignment ``aa.new_ting = 19203``. Although this behavior is the default Python class behavior, it can be undesirable for many reasons. For example, suppose we need to assign a new value to ``c``, but accidentally type ``self.d`` instead of ``self.c``. This is perfectly legal and will silently introduce a bug into seemingly normal code.
+
+Using the NDClass
+~~~~~~~~~~~~~~~~~
+
+However, the :class:`~touketsu.core.NDClass` mixin allows one to create classes that disallow dynamic instance attribution creation, in effect making Python class instances behave more like those typically found in languages like Java and C++. Using :class:`~touketsu.core.NDClass` preserves all the normal attributes of a Python class, for example the :attr:`~object.__dict__` and :attr:`__weakref__` attributes, with minimal influence on class inheritance structure and minimal changes made to the existing class definition compared to using :attr:`__slots__`.
+
+.. note::
+
+   Although it is seemingly possible to enforce this behavior using :attr:`__slots__`, it is messier to use :attr:`__slots__` with an existing system of class inheritance and there are several changes in class behavior that need to be noted if the decision to use :attr:`__slots__` is made. See the `Python data model documentation`__ for details on using :attr:`__slots__`.
+
+   .. __: https://docs.python.org/3/reference/datamodel.html#slots
+
+To use :class:`~touketsu.core.NDClass`, all we need to do is mix it in and call :meth:`~touketsu.core.NDClass._make_nondynamic` after defining all ``a_class`` instance attributes. We first import :class:`~touketsu.core.NDClass` from ``touketsu`` into the current namespace:
+
+.. code:: python
+
+   from touketsu import NDClass
+
+Then, we just need to modify our definition of ``a_class`` into
+
+.. code:: python
+
+   class a_class(NDClass):
+
+       def __init__(self, a = "a", b = "b", c = "c"):
+           self.a = a
+	   self.b = b
+	   self.c = c
+	   self._make_nondynamic()
+
+       def as_tuple(self): return (self.a, self.b, self.c)
+
+Instances of :class:`a_class` will now be unable to acquire new instance attributes at runtime unless the :attr:`~object.__dict__` attribute is manipulated manually. In the Python interpreter, if we were to redefine ``a_class`` in this manner and create an instance ``ab``, we could observe the following results.
+
+>>> ab = a_class()
+>>> ab.a
+'a'
+>>> ab.new_ting
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'a_class' object has no attribute 'new_ting'
+>>> ab.new_ting = 257
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "c:\Users\D\START\python3\lib\site-packages\touketsu-0.1.0-py3.8.egg\touketsu\core.py", line 119, in __setattr__
+AttributeError: NDClass instances cannot dynamically create new instance attributes
+
+Say goodbye to silently introducing bugs through fat-finger errors.
+
+Using the FrozenClass
+~~~~~~~~~~~~~~~~~~~~~
+
+However, in some instances, disallowing dynamic class instance attribute creation is not enough. Rather, one may want to make class instances immutable, in which case :class:`~touketsu.core.FrozenClass` should be used instead.
+
+.. note::
+
+   Section in progress.
 
 Multiple inheritance
 --------------------
 
-The :class:`~touketsu.core.FrozenClass` also works well with multiple inheritance, as we show in the following example. Suppose we have the classes ``a_class`` and ``b_class``, which have the definitions
+The :class:`~touketsu.core.NDClass` and :class:`~touketsu.core.FrozenClass` mixins work well with multiple inheritance, as we will show. Suppose we have the classes ``a_class`` and ``b_class``, which have the definitions
 
 .. code:: python
 
@@ -52,8 +146,6 @@ Now suppose we want to define a class ``c_class`` which inherits from ``a_class`
 
 .. code:: python
 
-   from touketsu import FrozenClass
-
    class c_class(a_class, b_class, FrozenClass):
 
        def __init__(self, a, b = "bbb", c = "ccc", d = "ddd", x = -1):
@@ -61,6 +153,8 @@ Now suppose we want to define a class ``c_class`` which inherits from ``a_class`
 	   b_class.__init__(self, c = c, d = d)
 	   self.x = x
 	   self._freeze()
+
+Instances of :class:`c_class` are now immutable. Assuming we have a :class:`c_class` instance ``aci``, operations like ``aci.a = 3`` and ``aci.d = "cheese"`` would result in an :class:`AttributeError` being raised by the :meth:`__setattr__` method defined in :class:`~touketsu.core.FrozenClass`.
 
 .. [#] Note that we opt to use explicit :meth:`__init__` calls since ``a_class`` and ``b_class`` have different :meth:`__init__` signatures. Cooperative subclassing by calling :func:`super` could also be used, but only if we allow each :meth:`__init__` signature to support variable arguments and keyword arguments. Please see `this StackOverflow post`__ for a nice explanation.
 
