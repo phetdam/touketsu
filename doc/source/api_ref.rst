@@ -10,14 +10,13 @@
 API Reference
 =============
 
-Below is a list of modules in the package. [#]_
+This page lists the two classes that form of the core of this package.
 
-Modules
+Classes
 -------
 
 .. autosummary::
-   :toctree: modules
+   :toctree: classes
 
-   touketsu.core
-
-.. [#] As you may have obviously noticed, there is only one module in the package.
+   touketsu.core.FrozenClass
+   touketsu.core.NDClass
