@@ -4,7 +4,9 @@
 #
 # 07-03-2020
 #
-# added class docstring.
+# added class docstring, changed references to examples.rst to user_guide.rst.
+# remove example from FrozenClass to user_guide.rst; working on NDClass
+# docstring which will later be migrated to user_guide.rst as well.
 #
 # 07-02-2020
 #
@@ -36,47 +38,12 @@ class FrozenClass:
        Class instances still have the :attr:`__dict__` property, which can be
        manually modified.
 
-    For generality and to illustrate how the :class:`FrozenClass` works well
-    with multiple inheritance, consider the following example. Suppose we have
-    the classes ``a_class`` and ``b_class``, which have the definitions
+    Simply inheriting from :class:`FrozenClass` does not do anything by itself.
+    To make all instances of the class inheriting :class:`FrozenClass` are
+    immutable, after definition of all instance attributes in the subclass's
+    :meth:`__init__` method, the :meth:`_freeze` method should be called.
 
-    .. code:: python
-
-       class a_class:
-
-           def __init__(self, a, b = "aaa"):
-               self.a = a
-               self.b = b
-
-       class b_class:
-
-           def __init__(self, c = "xxx", d = "yyy"):
-               self.c = c
-               self.d = d
-
-    Now suppose we want to define a class ``c_class`` which inherits from
-    ``a_class`` and ``b_class``. ``c_class`` introduces one new instance
-    attribute ``x`` and overrides some keyword argument defaults passed to the 
-    :meth:`__init__` methods of ``a_class`` and ``b_class``. If we wanted to
-    also define ``c_class`` to have immutable instances, we could define
-    ``c_class`` as follows: [#]_
-
-    .. code:: python
-
-       class c_class(a_class, b_class, FrozenClass):
-
-           def __init__(self, a, b = "bbb", c = "ccc", d = "ddd", x = -1):
-               a_class.__init__(self, a
-
-
-    .. [#] Note that we opt to use explicit :meth:`__init__` calls due to the
-       different :meth:`__init__` signatures. Cooperative subclassing by calling
-       :meth:`super` could also be used, but only if we allow each
-       :meth:`__init__` signature to support variable arguments and keyword
-       arguments. Please see `this StackOverflow post`__ for a nice explanation.
-
-    .. __: https://stackoverflow.com/questions/26927571/multiple-inheritance-in
-       -python3-with-different-signatures
+    See :doc:`../user_guide` for details examples on using :class:`FrozenClass`.
     """
     __frozen = False
 
@@ -111,7 +78,7 @@ class NDClass:
        manually modified.
 
     To 
-    See :doc:`../examples`
+    See :doc:`../user_guide`
 
     For generality and to show how the :class:`NDClass` works well with
     multiple inheritance, consider the following example. Suppose we want to
