@@ -41,7 +41,6 @@ if os.name == "nt": _delim = "\\"
 _PROJECT_ROOT = _delim.join(dirname(abspath(__file__)).split(_delim)[:-2])
 sys.path.insert(0, _PROJECT_ROOT)
 
-
 # -- Project information -----------------------------------------------------
 
 project = "touketsu"

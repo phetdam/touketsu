@@ -6,6 +6,7 @@
 
    initial creation. first attempt making documentation that actually looks
    legit, as i looked at the arch package's documentation for inspiration.
+   add template to classes autosummary to use own class template.
 
 API Reference
 =============
@@ -16,7 +17,8 @@ Classes
 -------
 
 .. autosummary::
-   :toctree: classes
+   :toctree: generated
+   :template: class.rst
 
-   touketsu.core.FrozenClass
-   touketsu.core.NDClass
+   ~touketsu.core.FrozenClass
+   ~touketsu.core.NDClass
