@@ -8,6 +8,11 @@
 #
 # Changelog:
 #
+# 07-03-2020
+#
+# get version and source from ../../VERSION for consistent versioning with
+# setup.py. no distinction between version and source needed for now.
+#
 # 07-02-2020
 #
 # make change to autodoc_default_options to not include undocumented members
@@ -33,7 +38,8 @@ import sys
 _delim = "/"
 if os.name == "nt": _delim = "\\"
 # back up two directory levels with correct delimiters
-sys.path.insert(0, _delim.join(dirname(abspath(__file__)).split(_delim)[:-2]))
+_PROJECT_ROOT = _delim.join(dirname(abspath(__file__)).split(_delim)[:-2])
+sys.path.insert(0, _PROJECT_ROOT)
 
 
 # -- Project information -----------------------------------------------------
@@ -42,8 +48,11 @@ project = "touketsu"
 copyright = "2020, Derek Huang"
 author = "Derek Huang"
 
-# The full version, including alpha/beta/rc tags
-release = "0.1.0"
+# The full version, including alpha/beta/rc tags (get from ../../VERSION)
+with open(_PROJECT_ROOT + _delim + "VERSION", "r") as vf:
+    release = vf.read().rstrip()
+# version, which we set equal to release
+version = release
 
 # -- General configuration ---------------------------------------------------
 

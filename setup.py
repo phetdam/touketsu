@@ -2,6 +2,10 @@
 #
 # Changelog:
 #
+# 07-03-2020
+#
+# get version from VERSION ro prevent version conflicts with conf.py
+#
 # 06-26-2020
 #
 # removed _DESC, now desc_short, and read long description from README.rst.
@@ -19,9 +23,12 @@ def _setup():
                   "attribute creation.")
     with open("README.rst", "r") as rmf:
         desc_long = rmf.read()
+    # version
+    with open("VERSION", "r") as vf:
+        version = vf.read().rstrip()
     # setup
     setup(name = "touketsu",
-          version = "0.0.1",
+          version = version,
           description = desc_short,
           long_description = desc_long,
           long_description_content_type = "text/x-rst",
