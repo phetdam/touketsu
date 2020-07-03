@@ -10,7 +10,8 @@
 #
 # 07-02-2020
 #
-# make change to autodoc_default_options to not include undocumented members.
+# make change to autodoc_default_options to not include undocumented members
+# plus correct missing assignment of _delim (used - instead of = oops).
 #
 # 06-30-2020
 #
@@ -27,7 +28,7 @@ import os
 from os.path import dirname, abspath
 import sys
 # change delimiter style based on whether system os NT or POSIX
-_delim - "/"
+_delim = "/"
 if os.name == "nt": _delim = "\\"
 # back up two directory levels with correct delimiters
 sys.path.insert(0, _delim.join(dirname(abspath(__file__)).split(_delim)[:-2]))
