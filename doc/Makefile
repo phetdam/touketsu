@@ -2,6 +2,10 @@
 #
 # Changelog:
 #
+# 07-03-2020
+#
+# correct mistaken use of SPHINXOPTS with BUILDOPTS. add clean build option.
+#
 # 06-30-2020 
 #
 # initial autogeneration by sphinx-quickstart. added changelog and got rid of
@@ -13,11 +17,11 @@ BUILDOPTS     =
 SOURCEDIR     = source
 BUILDDIR      = build
 
-.PHONY: clean help html
+.PHONY: clean help html html_clean
 
 # put first so that "make" without argument is like "make help".
 help:
-	@$(SPHINXBUILD) -M help $(SOURCEDIR) $(BUILDDIR) $(SPHINXOPTS)
+	@$(SPHINXBUILD) -M help $(SOURCEDIR) $(BUILDDIR) $(BUILDOPTS)
 
 # remove emacs autosave files and autosummary generated module files to force
 # rebuild. note that this is a dummy target
@@ -27,4 +31,8 @@ clean:
 
 # make html documentation
 html:
-	@$(SPHINXBUILD) -M html $(SOURCEDIR) $(BUILDDIR) $(SPHINXOPTS)
+	@$(SPHINXBUILD) -M html $(SOURCEDIR) $(BUILDDIR) $(BUILDOPTS)
+
+# make html documentation, but writing all output and ignoring old environment
+html_clean:
+	@$(SPHINXBUILD) -M html $(SOURCEDIR) $(BUILDDIR) -E -a $(BUILDOPTS)
