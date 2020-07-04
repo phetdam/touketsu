@@ -11,7 +11,8 @@
 # 07-03-2020
 #
 # get version and source from ../../VERSION for consistent versioning with
-# setup.py. no distinction between version and source needed for now.
+# setup.py. no distinction between version and source needed for now. disable
+# displaying version on documentation sidebar header.
 #
 # 07-02-2020
 #
@@ -108,6 +109,8 @@ extensions.append(html_theme)
 
 # no HTML theme options
 html_theme_options = {
+    # don't display version on documentation sidebar header
+    "display_version": False,
     # color for the sidebar navigation header
     "style_nav_header_background": "#a2c4cd"
 }

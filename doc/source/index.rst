@@ -2,6 +2,10 @@
 
    Changelog:
 
+   07-04-2020
+
+   removed titlesonly from toctree to show subheadings.
+
    07-03-2020
 
    add intro.rst, examples.rst, and :titlesonly: option to toctree. changed
@@ -21,7 +25,6 @@ Welcome to touketsu's documentation!
 .. toctree::
    :maxdepth: 4
    :caption: Table of contents
-   :titlesonly:
    :hidden:
 
    Introduction <intro>
