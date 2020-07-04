@@ -8,6 +8,10 @@
 #
 # Changelog:
 #
+# 07-04-2020
+#
+# reflect movement of logo to _static directory
+#
 # 07-03-2020
 #
 # get version and source from ../../VERSION for consistent versioning with
@@ -115,8 +119,8 @@ html_theme_options = {
     "style_nav_header_background": "#a2c4cd"
 }
 
-# file for image to be used in sidebar logo (must not exceed 200 px in width)
-html_logo = "./touketsu_logo.png"
+# file for image to be used in sidebar logo (should not exceed 200 px in width)
+html_logo = "./_static/touketsu_logo.png"
 
 # use emacs style for pygments highlighting in code blocks or inline code
 pygments_style = "emacs"
