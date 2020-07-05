@@ -54,11 +54,11 @@ Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as ``a_
 Quickstart
 ----------
 
-The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. All of these four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` simply prepend ``[Immutable] `` and ``[Nondynamic] `` respectively to the docstring of the decorated class, while the ``fancy`` variants also embed an automatically generated restructuredText ``.. caution::`` block.
+The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. All of these four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` simply respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
 
   Note:
 
-  The ``.. caution::`` block content is slightly out of date. It is recommended to use the non-\ ``fancy`` decorators for now.
+  The ``.. caution::`` block content is slightly out of date. Use the non-\ ``fancy`` decorators for now.
 
 Using the decorators is very simple. Suppose we have a class ``a_class`` defined as
 
