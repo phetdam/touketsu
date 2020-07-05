@@ -14,7 +14,6 @@
 =====================
 
 .. |logo_small| image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo_small.png
-   :align: left
 
 | *last updated: 07-05-2020*
 | *file created: 06-23-2020*
