@@ -98,6 +98,12 @@ If we then make an instance of ``a_class`` named ``aa``, we would be able to mod
 
 A tool like Sphinx__ would be able to properly read this docstring and generate formatted documentation.
 
+.. [#] It is recommended that class docstrings are `PEP 257`__ compliant for best results.
+
+.. __: https://www.sphinx-doc.org/en/master/
+
+.. __: https://www.python.org/dev/peps/pep-0257/
+
 Inheritance
 ~~~~~~~~~~~
 
@@ -131,6 +137,8 @@ Now, suppose that ``a_class`` was decorated with ``nondynamic``. Which one of th
 
 It turns out that ``A_class()`` works, and does not inherit the nondynamic property of ``a_class``, while ``c_class()`` will raise an ``AttributeError``. This is because super__ ignores the ``nondynamic`` decorator and will call the *original* bound ``__init__`` method of ``a_class``. However, the unbound ``__init__`` methods of ``b_class`` and ``a_class`` are from the decorated versions of these classes, which have ``__setattr__`` overriden. Therefore, after calling ``a_class.__init__``, an ``AttributeError`` is thrown upon execution of ``b_class.__init__``.
 
+.. __: https://docs.python.org/3/library/functions.html#super
+
 Fortunately, ``touketsu`` provides the ``orig_init`` function to wrap the unbound ``__init__`` methods to return the original class ``__init__``. Therefore, if we define ``c_class`` as
 
 .. code:: python
@@ -143,12 +151,3 @@ Fortunately, ``touketsu`` provides the ``orig_init`` function to wrap the unboun
 	   self.d = d
 
 Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note that although ``a_class`` is decorated with ``immutable`` and ``b_class`` is decorated with ``nondynamic``, ``c_class`` is just a normal class. We can in turn decorate ``c_class`` if so desired, but note that properties imparted by a ``touketsu`` decorator do **not**  persist through the inheritance structure.
-
-.. [#] It is recommended that class docstrings are `PEP 257`__ compliant for best results.
-
-.. __: https://www.python.org/dev/peps/pep-0257/
-
-.. __: https://www.sphinx-doc.org/en/master/
-
-.. __: https://docs.python.org/3/library/functions.html#super
-
