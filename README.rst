@@ -28,14 +28,12 @@ Inspired by all the unfortunate incidences where fat-finger errors led to the cr
 Installation
 ------------
 
-.. note::
-
-   Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
+.. note:: Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
 
 Installing from source
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Install from source by simply ``cd``ing to a preferred directory and typing
+Install from source by simply ``cd``\ ing to a preferred directory and typing
 
 .. code:: bash
 
