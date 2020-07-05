@@ -90,7 +90,7 @@ Say goodbye to silently introducing bugs through fat-finger errors.
 Using the FrozenClass
 ---------------------
 
-However, in some instances, disallowing dynamic class instance attribute creation is not enough. Rather, one may want to make class instances immutable, in which case :class:`~touketsu.core.FrozenClass` should be used instead.
+However, in some instances, disallowing dynamic class instance attribute creation is not enough. Rather, one may want to make class instances immutable, in which case :class:`~touketsu.core.FrozenClass` should be used instead. Like :class:`~touketsu.core.NDClass`, :class:`~touketsu.core.FrozenClass` preserves all the normal Python class attributes and minimally affects class definitions and existing class inheritance structures.
 
 .. note::
 

@@ -4,7 +4,7 @@
 
    07-04-2020
 
-   removed titlesonly from toctree to show subheadings.
+   removed and then added back titlesonly. that was pointless.
 
    07-03-2020
 
@@ -25,6 +25,7 @@ Welcome to touketsu's documentation!
 .. toctree::
    :maxdepth: 4
    :caption: Table of contents
+   :titlesonly:
    :hidden:
 
    Introduction <intro>
