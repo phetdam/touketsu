@@ -12,7 +12,7 @@
 
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo_small.png
    :align: left
-
+\
 touketsu
 ========
 
