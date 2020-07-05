@@ -32,9 +32,6 @@ Installation
 
   Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
 
-Installing from source
-~~~~~~~~~~~~~~~~~~~~~~
-
 Install from source by simply ``cd``\ ing to a preferred directory and typing
 
 .. code:: bash
@@ -51,10 +48,25 @@ Then check that the package is properly working by trying an example in the inte
 ...         self.a = a
 ...         self.b = b
 >>> aa = a_class()
->>> aa.a = 5
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "c:\Users\D\START\prog_proj\touketsu\touketsu\core.py", line 89, in _touketsu_restricted_setattr
-    raise AttributeError("Immutable class instance cannot dynamically "
-AttributeError: Immutable class instance cannot dynamically create new instance attributes nor modify its existing attributes.
->>>
+
+Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as ``a_class`` instances are immutable.
+
+Quickstart
+----------
+
+The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. All of these four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` simply prepend ``[Immutable] `` and ``[Nondynamic] `` respectively to the docstring of the decorated class, while the ``fancy`` variants also embed an automatically generated restructuredText ``.. caution::`` block.
+
+  Note:
+
+  The ``.. caution::`` block content is slightly out of date. It is recommended to use the non-\ ``fancy`` decorators for now.
+
+Using the decorators is very simple. Suppose we have a class ``a_class`` defined as
+
+.. code:: python
+
+   class a_class:
+
+       def __init__(self, a = "a", b = "b"):
+           self.a = a
+	   self.b = b
+   
