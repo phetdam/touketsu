@@ -54,13 +54,13 @@ Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as ``a_
 Quickstart
 ----------
 
-The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. These four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
+The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. These four decorators make minor changes to the decorated class's docstring--``immutable`` and ``nondynamic`` respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
 
   Note:
 
   The ``.. caution::`` block content is slightly out of date. Use the non-\ ``fancy`` decorators for now.
 
-Using the decorators is very simple. Suppose we have a class ``a_class`` defined as
+Using the decorators is very simple. Suppose we have a class ``a_class`` defined as [#]_
 
 .. code:: python
 
@@ -89,7 +89,7 @@ If we wanted instances of ``a_class`` to allow modification of instance attribut
            self.a = a
 	   self.b = b
 
-If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a`` and ``aa.b``, but attempting ``aa.c = 15`` or a similar operation would result in an ``AttributeError``. Also, if we were to inspect the docstring for ``a_class``, one would see that it has now become
+If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a`` and ``aa.b``, but attempting ``aa.c = 15`` or a similar operation would result in an ``AttributeError``. Also, the ``a_class`` has now become
 
 .. code:: python
 
@@ -99,5 +99,13 @@ If we then make an instance of ``a_class`` named ``aa``, we would be able to mod
    :param b: The second parameter.
    """
 
-Choosing to instead use the ``immutable`` decorator would make instances of ``a_class`` immutable, i.e. operations like ``aa.a = 5`` would also raise an ``AttributeError``.
+A documentation tool like Sphinx__ would be able to properly parse this docstring and generate formatted documentation.
+
+Note that if we had instead used the ``immutable`` decorator, instances of ``a_class`` would be immutable, i.e. operations like ``aa.a = 5`` would also raise an ``AttributeError``.
+
+.. [#] It is recommended that class docstrings are `PEP 257`__ compliant for best results.
+
+.. __: https://www.python.org/dev/peps/pep-0257/
+
+.. __: https://www.sphinx-doc.org/en/master/
 
