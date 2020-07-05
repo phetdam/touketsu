@@ -2,6 +2,10 @@
 
    Changelog:
 
+   07-05-2020
+
+   modified introduction, added notes and installation section + example.
+
    06-23-2020
 
    initial creation.
@@ -9,15 +13,47 @@
 touketsu
 ========
 
-| *last updated: 06-23-2020*
+| *last updated: 07-05-2020*
 | *file created: 06-23-2020*
 |
 
-A tiny package for creating classes that disallow dynamic instance attribute creation.
+A tiny package of decorators for creating classes that disallow dynamic instance attribute creation or modification while preserving class inheritance.
 
-Work in progress. Inspired by all the unfortunate incidences where people accidentally created a new instance attribute instead of modifying an existing one due to typos.
+Inspired by all the unfortunate incidences where fat-finger errors led to the creation of a new instance attribute instead of the modification of an existing instance attribute.
+
+.. note::
+
+   The code is undergoing significant changes but is somewhat ready for use. Proper documentation is in the process of being written; currently ``doc/source`` contanis a very old and no longer relevant set of documentation from the early stages of the project.
 
 Installation
 ------------
 
-TBD
+.. note::
+
+   Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
+
+Installing from source
+~~~~~~~~~~~~~~~~~~~~~~
+
+Install from source by simply ``cd``ing to a preferred directory and typing
+
+.. code:: bash
+
+   git clone https://github.com/phetdam/touketsu
+   make install
+
+Then check that the package is properly working by trying an example in the interpreter, for example
+
+>>> from touketsu import immutable
+>>> @immutable
+... class a_class:
+...     def __init__(self, a = "a", b = "b"):
+...         self.a = a
+...         self.b = b
+>>> aa = a_class()
+>>> aa.a = 5
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "c:\Users\D\START\prog_proj\touketsu\touketsu\core.py", line 89, in _touketsu_restricted_setattr
+    raise AttributeError("Immutable class instance cannot dynamically "
+AttributeError: Immutable class instance cannot dynamically create new instance attributes nor modify its existing attributes.
