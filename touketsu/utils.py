@@ -59,7 +59,7 @@ def _classdocmod(obj, class_type, docmod = None, docwidth = 80):
     # skip checks; supposed to be internal function
     if (docmod is None) or (docmod == "identity"): return None
     elif docmod == "brief":
-        obj.__doc__ = _LFMT + class_type.title() + _RFMT + s
+        obj.__doc__ = _LFMT + class_type.title() + _RFMT + odoc
         return None
     elif docmod == "fancy":
         # split odoc by \n\n
