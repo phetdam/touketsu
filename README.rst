@@ -129,7 +129,7 @@ Suppose we also have the classes ``b_class``, ``c_class``, and ``A_class``, wher
 
 Now, suppose that ``a_class`` was decorated with ``nondynamic``. Which one of these classes would raise an ``AttributeError`` upon an attempt to create a class instance?
 
-It turns out that ``A_class()`` works, and does not inherit the nondynamic property of ``a_class``, while ``c_class()`` will raise an ``AttributeError`. This is because super__ ignores the ``nondynamic`` decorator and will call the *original* bound ``__init__`` method of ``a_class``. However, the unbound ``__init__`` methods of ``b_class`` and ``a_class`` are from the decorated versions of these classes, which have ``__setattr__`` overriden. Therefore, after calling ``a_class.__init__``, an ``AttributeError`` is thrown upon execution of ``b_class.__init__``.
+It turns out that ``A_class()`` works, and does not inherit the nondynamic property of ``a_class``, while ``c_class()`` will raise an ``AttributeError``. This is because super__ ignores the ``nondynamic`` decorator and will call the *original* bound ``__init__`` method of ``a_class``. However, the unbound ``__init__`` methods of ``b_class`` and ``a_class`` are from the decorated versions of these classes, which have ``__setattr__`` overriden. Therefore, after calling ``a_class.__init__``, an ``AttributeError`` is thrown upon execution of ``b_class.__init__``.
 
 Fortunately, ``touketsu`` provides the ``orig_init`` function to wrap the unbound ``__init__`` methods to return the original class ``__init__``. Therefore, if we define ``c_class`` as
 
