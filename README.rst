@@ -10,12 +10,12 @@
 
    initial creation.
 
-touketsu
-========
-
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo.png
    :height: 150 px
    :align: left
+
+touketsu
+========
 
 | *last updated: 07-05-2020*
 | *file created: 06-23-2020*
