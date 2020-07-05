@@ -19,16 +19,18 @@ touketsu
 
 A tiny package of decorators for creating classes that disallow dynamic instance attribute creation or modification while preserving class inheritance. This project was inspired by all the unfortunate incidences where fat-finger errors led to the creation of a new instance attribute instead of the modification of an existing instance attribute.
 
-  Note:
+  Note: [#]_
 
-  The code is undergoing significant changes but is somewhat ready for use. Proper documentation is in the process of being written; currently ``doc/source`` contains a very old and no longer relevant set of documentation from the early stages of the project.
+  The code is undergoing significant changes but is somewhat ready for use. Proper documentation is in the process of being written; currently ``doc/source`` contains a very old and no longer relevant set of documentation from the early stages of the project. Please take a look if you are curious.
+
+.. [#] One may notice that I used a block quote, not the ``.. note::`` directive. This renders better in Github when there is no HTML theme in place to generate fancier output.
 
 Installation
 ------------
 
-.. note::
+  Note:
 
-   Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
+  Package is not on PyPI yet, but once it is, you can expect to simply use ``pip`` to install.
 
 Installing from source
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -55,3 +57,4 @@ Traceback (most recent call last):
   File "c:\Users\D\START\prog_proj\touketsu\touketsu\core.py", line 89, in _touketsu_restricted_setattr
     raise AttributeError("Immutable class instance cannot dynamically "
 AttributeError: Immutable class instance cannot dynamically create new instance attributes nor modify its existing attributes.
+>>>
