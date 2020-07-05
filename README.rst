@@ -142,7 +142,7 @@ Fortunately, ``touketsu`` provides the ``orig_init`` function to wrap the unboun
 	   orig_init(b_class.__init__)(self, b = b, c = c)
 	   self.d = d
 
-Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note that although ``a_class`` is decorated with ``immutable`` and ``b_class`` is decorated with ``nondynamic``, ``c_class`` is just a normal class. However, we can in turn decorate ``c_class`` if so desired.
+Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note that although ``a_class`` is decorated with ``immutable`` and ``b_class`` is decorated with ``nondynamic``, ``c_class`` is just a normal class. We can in turn decorate ``c_class`` if so desired, but note that properties imparted by a ``touketsu`` decorator do **not**  persist through the inheritance structure.
 
 .. [#] It is recommended that class docstrings are `PEP 257`__ compliant for best results.
 
