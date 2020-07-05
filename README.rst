@@ -4,14 +4,13 @@
 
    07-05-2020
 
-   modified introduction, added notes and installation section.
+   modified introduction, added notes, installation section, and logo.
 
    06-23-2020
 
    initial creation.
 
-.. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo.png
-   :height: 150 px
+.. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo_small.png
    :align: left
 
 touketsu
