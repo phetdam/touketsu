@@ -52,5 +52,5 @@ Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as ``a_
 
 For a quick guide to usage, see the `quickstart guide`__.
 
-.. __: https://github.com/phetdam/touketsu/doc/source/quickstart.rst
+.. __: https://github.com/phetdam/touketsu/blob/master/doc/source/quickstart.rst
 
