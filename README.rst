@@ -89,7 +89,7 @@ If we wanted instances of ``a_class`` to allow modification of instance attribut
            self.a = a
 	   self.b = b
 
-If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a`` and ``aa.b``, but attempting ``aa.c = 15`` or a similar operation would result in an ``AttributeError``. Also, the ``a_class`` has now become
+If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a`` and ``aa.b``, but attempting ``aa.c = 15`` or a similar operation would result in an ``AttributeError``. Also, the ``a_class`` docstring has now become
 
 .. code:: python
 
@@ -99,7 +99,7 @@ If we then make an instance of ``a_class`` named ``aa``, we would be able to mod
    :param b: The second parameter.
    """
 
-A documentation tool like Sphinx__ would be able to properly parse this docstring and generate formatted documentation.
+A tool like Sphinx__ would be able to properly read this docstring and generate formatted documentation.
 
 Note that if we had instead used the ``immutable`` decorator, instances of ``a_class`` would be immutable, i.e. operations like ``aa.a = 5`` would also raise an ``AttributeError``.
 
