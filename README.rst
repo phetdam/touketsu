@@ -54,7 +54,7 @@ Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as ``a_
 Quickstart
 ----------
 
-The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. All of these four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` simply respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
+The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. These four decorators make minor changes to the docstring of the class they are wrapping--``immutable`` and ``nondynamic`` respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
 
   Note:
 
@@ -65,8 +65,39 @@ Using the decorators is very simple. Suppose we have a class ``a_class`` defined
 .. code:: python
 
    class a_class:
+       """A sample class.
 
+       :param a: The first parameter.
+       :param b: The second parameter.
+       """
        def __init__(self, a = "a", b = "b"):
            self.a = a
 	   self.b = b
    
+If we wanted instances of ``a_class`` to allow modification of instance attributes but not to allow dynamic instance attribution creation, we would use the ``nondynamic`` decorator as follows:
+
+.. code:: python
+
+   @nondynamic
+   class a_class:
+       """A sample class.
+
+       :param a: The first parameter.
+       :param b: The second parameter.
+       """
+       def __init__(self, a = "a", b = "b"):
+           self.a = a
+	   self.b = b
+
+If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a`` and ``aa.b``, but attempting ``aa.c = 15`` or a similar operation would result in an ``AttributeError``. Also, if we were to inspect the docstring for ``a_class``, one would see that it has now become
+
+.. code:: python
+
+   """**[Nondynamic]** A sample class.
+
+   :param a: The first parameter.
+   :param b: The second parameter.
+   """
+
+Choosing to instead use the ``immutable`` decorator would make instances of ``a_class`` immutable, i.e. operations like ``aa.a = 5`` would also raise an ``AttributeError``.
+
