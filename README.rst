@@ -12,14 +12,11 @@
 
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/touketsu_logo_small.png
 
-touketsu
-========
-
 | *last updated: 07-05-2020*
 | *file created: 06-23-2020*
 |
 
-A tiny package of decorators for creating classes that disallow dynamic instance attribute creation or modification while preserving class inheritance. This project was inspired by all the unfortunate incidences where fat-finger errors led to the creation of a new instance attribute instead of the modification of an existing instance attribute.
+**touketsu** is a tiny package for creating classes that disallow dynamic instance attribute creation or modification while preserving class inheritance. This project was inspired by all the unfortunate incidences where fat-finger errors led to the creation of a new instance attribute instead of the modification of an existing instance attribute.
 
   Note: [#]_
 
