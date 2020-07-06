@@ -6,7 +6,8 @@
 #
 # added decorators; working on decorator factory. moved _classdocmod and
 # constants to _utils, now utils. figured out how to get the decorators to work
-# with inheritance structures; we balling. shorten AttributeErrors.
+# with inheritance structures; we balling. shorten AttributeErrors. remove bug
+# in unrestrict that ended up giving classes their superclass __doc__ attribute.
 #
 # 07-03-2020
 #
@@ -33,9 +34,12 @@ Contains the decorators and decorator factory that are the package's lifeblood.
 from copy import deepcopy
 from inspect import signature
 from functools import wraps
-from warnings import warn
+import warnings
 
 from .utils import classdocmod
+
+# set up warnings
+warnings.simplefilter("always")
 
 def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
                             use_tabs = False, fancy_caution = None,
@@ -112,8 +116,8 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
         cls.__setattr__ = _touketsu_restricted_setattr
         try: cls.__init__.__signature__ = signature(cls.__init__)
         except AttributeError:
-            warn("{0}: Class without __init__ decorated. object.__init__ "
-                 "signature will be displayed instead.".format(_fn))
+            warnings.warn("Class without __init__ decorated. object.__init__ "
+                          "signature will be displayed instead.")
         cls.__init__ = init_wrapper(cls.__init__)
         # also bind original __init__ method to new __init__ (so orig_init) works
         cls.__init__._touketsu_orig__init__ = _orig__init__
@@ -152,25 +156,30 @@ def unrestrict(cls):
         :func:`~touketsu.core.class_decorator_factory`
     :type cls: type
     """
-    # if doesn't have restricted property, ignore
-    if not hasattr(cls, "_touketsu_restriction"): pass
-    # else try to delete the class attribute. does not work if superclass of cls
-    # is also restricted, so raise a warning
-    else:
+    # try to delete restriction; doesn't work if superclass is also restricted
+    if hasattr(cls, "_touketsu_restriction"):
         try: delattr(cls, "_touketsu_restriction")
         except AttributeError:
-            warn(UserWarning)
+            warnings.warn("Unable to delete _touketsu_restriction; likely a "
+                          "superclass attribute")
     # restore original docstring if necessary and delete _touketsu_orig__doc__
+    # note we do delattr before doc assignment since this may be the superclass
+    # __doc__, which we do not want
     if hasattr(cls, "_touketsu_orig__doc__"):
-        cls.__doc__ = cls._touketsu_orig__doc__
-        delattr(cls, "_touketsu_orig__doc__")
+        try:
+            _orig__doc__ = cls._touketsu_orig__doc__
+            delattr(cls, "_touketsu_orig__doc__")
+            cls.__doc__ = _orig__doc__
+        except AttributeError:
+            warnings.warn("Unable to delete _touketsu_orig__doc__; likely a "
+                          "superclass attribute")
     # override __setattr__ with object's __setattr__ if necessary
     if cls.__setattr__ != object.__setattr__:
         cls.__setattr__ = object.__setattr__
-    # use original __init__ method if necessary
-    if hasattr(cls, "_touketsu_orig__init__"):
-        cls.__init__ = cls._touketsu_orig__init__
-        delattr(cls, "_touketsu_orig__init__")
+    # use original __init__ method if necessary. no need for try statement as
+    # the __init__ method does not have a direct superclass with the same attr
+    if hasattr(cls.__init__, "_touketsu_orig__init__"):
+        cls.__init__ = cls.__init__._touketsu_orig__init__
     # return class
     return cls
 
