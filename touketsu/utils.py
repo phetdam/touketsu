@@ -3,12 +3,11 @@
 # 07-05-2020
 #
 # initial creation. migrated _classdocmod and private constants over from
-# touketsu.core. renamed from _utils.py to utils.py.
+# touketsu.core. renamed from _utils.py to utils.py. remove _ from classdocmod.
 
 __doc__ = "Various utilities for the ``touketsu`` package."
 
 from textwrap import fill
-from warnings import warn
 
 # left and right formatting strings for identifier appended by _docmod_class to
 # a docstring when docmod is "brief" or "fancy" (_RFMT should end with " ")
@@ -23,7 +22,7 @@ _SUBCLASS_CAUTION = (":class:`" + _UNKNOWN_NAME + "` may be subclassed in only "
                      "subclass :meth:`__init__` method.")
 
 
-def _classdocmod(obj, class_type, docmod = None, docwidth = 80):
+def classdocmod(obj, class_type, docmod = None, docwidth = 80):
     """Modifies a class docstring.
 
     For the function to work properly, the docstring should be `PEP 257`__ 

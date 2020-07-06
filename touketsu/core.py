@@ -6,7 +6,7 @@
 #
 # added decorators; working on decorator factory. moved _classdocmod and
 # constants to _utils, now utils. figured out how to get the decorators to work
-# with inheritance structures; we balling.
+# with inheritance structures; we balling. shorten AttributeErrors.
 #
 # 07-03-2020
 #
@@ -33,8 +33,9 @@ Contains the decorators and decorator factory that are the package's lifeblood.
 from copy import deepcopy
 from inspect import signature
 from functools import wraps
+from warnings import warn
 
-from .utils import _classdocmod
+from .utils import classdocmod
 
 def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
                             use_tabs = False, fancy_caution = None,
@@ -70,9 +71,8 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
     _fn = class_decorator_factory.__name__
     # if dectype is not valid, raise error
     if (dectype != "immutable") and (dectype != "nondynamic"):
-        raise TypeError("{0}: ")
-    if dectype is None:
         raise ValueError("{0}: dectype must be \"immutable\" or \"nondynamic\"")
+
     # decorator for a class
     def wrapper(cls):
         # raise TypeError if this is not a type
@@ -83,27 +83,22 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
         cls._touketsu_restriction = None
         # original class docstring and original class __init__ method
         cls._touketsu_orig__doc__ = cls.__doc__
-        cls._touketsu_orig__init__ = cls.__init__
+        _orig__init__ = cls.__init__
 
         # new __setattr__
         def _touketsu_restricted_setattr(self, key, value):
             if self._touketsu_restriction == "immutable":
-                raise AttributeError("Immutable class instance cannot dynamically "
-                                     "create new instance attributes nor modify "
-                                     "its existing instance attributes.")
+                raise AttributeError("Immutable class instance")
             # disable manual "unrestriction" of the restricted class
             elif (self._touketsu_restriction == "nondynamic") and \
                  (key != "_touketsu_restriction") and (not hasattr(self, key)):
-                raise AttributeError("Nondynamic class instance cannot dynamically "
-                                     "create new instance attributes.")
+                raise AttributeError("Nondynamic class instance")
             object.__setattr__(self, key, value)
 
         # wrapper for class __init__ method
         def init_wrapper(init):
             # for "well-behaved" decoration (don't lose signature and docstring)
             @wraps(init)
-            
-            # actual __init__ wrapper
             def _init_wrapper(self, *args, **kwargs):
                 init(self, *args, **kwargs)
                 self._touketsu_restriction = dectype
@@ -111,7 +106,7 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
             return _init_wrapper
         
         # perform docstring modification
-        _classdocmod(cls, dectype, docmod = docmod)
+        classdocmod(cls, dectype, docmod = docmod)
         # override __setattr__ and __init__ of class + preserve original
         # signature. it is known that sphinx doesn't work well with functools.wraps.
         cls.__setattr__ = _touketsu_restricted_setattr
@@ -120,8 +115,8 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
             warn("{0}: Class without __init__ decorated. object.__init__ "
                  "signature will be displayed instead.".format(_fn))
         cls.__init__ = init_wrapper(cls.__init__)
-        # also bind original __init__ method to new __init__
-        cls.__init__._touketsu_orig__init__ = cls._touketsu_orig__init__
+        # also bind original __init__ method to new __init__ (so orig_init) works
+        cls.__init__._touketsu_orig__init__ = _orig__init__
         # return class
         return cls
 
@@ -160,8 +155,11 @@ def unrestrict(cls):
     # if doesn't have restricted property, ignore
     if not hasattr(cls, "_touketsu_restriction"): pass
     # else try to delete the class attribute. does not work if superclass of cls
-    # is also restricted, so then fall back to setting to None
-    else: delattr(cls, "_touketsu_restriction")
+    # is also restricted, so raise a warning
+    else:
+        try: delattr(cls, "_touketsu_restriction")
+        except AttributeError:
+            warn(UserWarning)
     # restore original docstring if necessary and delete _touketsu_orig__doc__
     if hasattr(cls, "_touketsu_orig__doc__"):
         cls.__doc__ = cls._touketsu_orig__doc__
