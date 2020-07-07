@@ -51,7 +51,7 @@ def classdocmod(obj, class_type, docmod = None, docwidth = 80):
 
     .. __: https://www.python.org/dev/peps/pep-0257/
     """
-    _fn = _classdocmod.__name__
+    _fn = classdocmod.__name__
     # if docstring is None, set to "" first
     odoc = obj.__doc__
     if odoc is None: odoc = ""

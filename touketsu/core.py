@@ -2,12 +2,18 @@
 #
 # Changelog:
 #
+# 07-07-2020
+#
+# cleaned up/added docstrings for class_decorator_factory, fancy_immutable, and
+# identity_immutable. little actual work done because summer internship started.
+#
 # 07-05-2020
 #
 # added decorators; working on decorator factory. moved _classdocmod and
 # constants to _utils, now utils. figured out how to get the decorators to work
 # with inheritance structures; we balling. shorten AttributeErrors. remove bug
 # in unrestrict that ended up giving classes their superclass __doc__ attribute.
+# clean up some docstrings and correct some spacing.
 #
 # 07-03-2020
 #
@@ -44,7 +50,7 @@ warnings.simplefilter("always")
 def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
                             use_tabs = False, fancy_caution = None,
                             fancy_note = None):
-    """``touketsu`` factory method for producing custom class decorators.
+    """``touketsu`` class decorator factory..
 
     The returned decorator is able to automatically modify the docstrings of
     the wrapped class, provided they follow the docstring format specified in
@@ -136,25 +142,27 @@ def unrestrict(cls):
     the decorator's effect, restoring the original :meth:`__init__` and 
     :meth:`~object.__setattr__` methods.
 
+    Useful for temporarily removing a ``touketsu`` decorator restriction from
+    a decorated class.
+
     .. note::
 
        If the class is undecorated, then :func:`unrestrict` will have no effect.
 
     .. caution::
 
-       Do not call :func:`unrestrict` on classes inheriting from classes 
-       decorated by a decorator returned from
-       :func:`~touketsu.core.class_decorator_factory`. The decorator
-       restrictions do not persist through the inheritance structure if
-       :func:`super` is used for inheritance or if the unbound superclass
-       :meth:`__init__` methods are wrapped with :func:`orig_init`.
-
-    Useful for inheriting a restricted class to lift the restriction before
-    reapplying another potentially different restriction.
+       Calling :func:`unrestrict` on subclasses of classes decorated by a
+       decorator returned from :func:`~touketsu.core.class_decorator_factory`
+       will result in warnings being raised. The decorator restrictions do not
+       persist through the inheritance structure if :func:`super` is used for
+       inheritance or if the unbound superclass :meth:`__init__` methods are
+       wrapped with :func:`orig_init`.
 
     :param cls: Class decorated by a decorator returned from 
         :func:`~touketsu.core.class_decorator_factory`
     :type cls: type
+    :returns: The original class, without decoration
+    :rtype: type
     """
     # try to delete restriction; doesn't work if superclass is also restricted
     if hasattr(cls, "_touketsu_restriction"):
@@ -183,9 +191,18 @@ def unrestrict(cls):
     # return class
     return cls
 
-def orig_init(init):
-    """Force class to use original :meth:`__init__`
 
+def orig_init(init):
+    """Return original :meth:`__init__` from decorated :meth:`__init__`.
+
+    If ``init`` is not the :meth:`__init__` of a decorated class, then ``init``
+    itself is returned.
+
+    :param init: The unbound :meth:`__init__` of the decorated class.
+    :type init: function
+    :returns: The unbound original :meth:`__init__` of the decorated class or
+        ``init``, if ``init`` is not the :meth:`__init__` of a decorated class.
+    :rtype: function
     """
     _fn = orig_init.__name__
     # should be a function
@@ -198,20 +215,88 @@ def orig_init(init):
     # raise TypeError if necessary
     raise TypeError("{0}: init must be a method or function".format(_fn))
 
+
 def immutable(cls):
+    """Decorator to make a class immutable. Imparts a minor docstring change.
+
+    Equivalent to :func:`class_decorator_factory` with ``dectype = "immutable"``
+    and ``decmod = "brief"``. The standard decorator to use for making a class
+    immutable.
+
+    .. note::
+
+       Do not apply to a previously decorated class. Instead, use
+       :func:`unrestrict` first to return the class to its original state before
+       applying :func:`immutable`.
+
+    :param cls: The class to decorate.
+    :type cls: type
+    :returns: A decorated version of the original class with immutable
+        instances.
+    :rtype: type
+    """
     return class_decorator_factory("immutable", "brief")(cls)
 
+
 def identity_immutable(cls):
+    """Decorator to make a class immutable, with no docstring changes.
+
+    .. caution::
+
+       Since :func:`identity_immutable` does not modify the docstring of the
+       class it decorates, it is easy to mistake the decorated class for the
+       undecorated class. It is recommended to use the plain :func:`immutable`
+       decorator instead.
+
+    .. note::
+
+       Do not apply to a previously decorated class. Instead, use
+       :func:`unrestrict` first to return the class to its original state before
+       applying :func:`identity_immutable`.
+
+    :param cls: The class to decorate.
+    :type cls: type
+    :returns: A decorated version of the original class with immutable
+        instances.
+    :rtype: type
+    """
     return class_decorator_factory("immutable", "identity")(cls)
 
+
 def fancy_immutable(cls):
+    """Decorator to make a class immutable, with more fancy docstring changes.
+
+    Equivalent to :func:`class_decorator_factory` with ``dectype = "immutable"``
+    and ``decmod = "fancy"``. The decorator to use for making a class immutable
+    while also providing a more visible indication, through the use of a
+    ``.. caution::`` block, that inheritance must be considered more carefully.
+
+    .. note::
+
+       Do not apply to a previously decorated class. Instead, use
+       :func:`unrestrict` first to return the class to its original state before
+       applying :func:`fancy_immutable`.    
+
+    .. note::
+
+       I really should put this warning in :doc:`../api_ref` instead.
+
+    :param cls: The class to decorate.
+    :type cls: type
+    :returns: A decorated version of the original class with immutable
+        instances.
+    :rtype: type
+    """
     return class_decorator_factory("immutable", "fancy")(cls)
+
 
 def nondynamic(cls):
     return class_decorator_factory("nondynamic", "brief")(cls)
 
+
 def identity_nondynamic(cls):
     return class_decorator_factory("nondynamic", "identity")(cls)
+
 
 def fancy_nondynamic(cls):
     return class_decorator_factory("nondynamic", "fancy")(cls)

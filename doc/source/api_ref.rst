@@ -33,6 +33,7 @@ Decorators
 
 .. autosummary::
    :toctree: generated
+   :template: decorator.rst
 
    ~touketsu.core.immutable
    ~touketsu.core.fancy_immutable
