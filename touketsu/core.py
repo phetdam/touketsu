@@ -50,7 +50,7 @@ warnings.simplefilter("always")
 def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
                             use_tabs = False, fancy_caution = None,
                             fancy_note = None):
-    """``touketsu`` class decorator factory..
+    """``touketsu`` class decorator factory.
 
     The returned decorator is able to automatically modify the docstrings of
     the wrapped class, provided they follow the docstring format specified in
