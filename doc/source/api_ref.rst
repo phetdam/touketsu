@@ -2,6 +2,10 @@
 
    Changelog:
 
+   07-07-2020
+
+   remove :nosignatures: from one of the decorator autosummary directives.
+
    07-05-2020
 
    add more autosummary for decorators and some of the new decorators.
@@ -44,7 +48,6 @@ If these decorators are too limited for one's use case, ``touketsu`` also provid
 
 .. autosummary::
    :toctree: generated
-   :nosignatures:
 
    ~touketsu.core.class_decorator_factory
 
