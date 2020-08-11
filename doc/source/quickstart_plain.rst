@@ -63,6 +63,8 @@ the ``nondynamic`` decorator as follows:
 
 .. code:: python
 
+   from touketsu import nondynamic
+
    @nondynamic
    class a_class:
        """A sample class.
@@ -107,6 +109,8 @@ Let's define a second class ``b_class`` as follows:
 
 .. code:: python
 
+   from touketsu import immutable
+
    @immutable
    class b_class:
 
@@ -139,6 +143,8 @@ function to wrap unbound ``__init__`` methods, returning the original class
 ``__init__``. Therefore, if we define ``c_class`` as
 
 .. code:: python
+
+   from touketsu import orig_init
 
    class c_class(a_class, b_class):
 
