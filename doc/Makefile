@@ -18,4 +18,5 @@ html:
 
 # make html documentation, but writing all output and ignoring old environment
 html_clean:
+	@$(RM) -f $(SOURCEDIR)/generated/*.rst
 	@$(SPHINXBUILD) -M html $(SOURCEDIR) $(BUILDDIR) -E -a $(BUILDOPTS)
