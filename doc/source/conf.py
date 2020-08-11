@@ -5,30 +5,6 @@
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
-#
-# Changelog:
-#
-# 07-04-2020
-#
-# reflect movement of logo to _static directory
-#
-# 07-03-2020
-#
-# get version and source from ../../VERSION for consistent versioning with
-# setup.py. no distinction between version and source needed for now. disable
-# displaying version on documentation sidebar header.
-#
-# 07-02-2020
-#
-# make change to autodoc_default_options to not include undocumented members
-# plus correct missing assignment of _delim (used - instead of = oops). added
-# html_logo option to point to new (kind of sh*tty) logo. also add option for
-# sphinx_rtd_theme to change sidebar header color (looks more ice-like).
-#
-# 06-30-2020
-#
-# initial creation by sphinx-quickstart. added changelog, autodoc, autosummary,
-# and intersphinx configuration. added read the docs theme setup.
 
 # -- Path setup --------------------------------------------------------------
 

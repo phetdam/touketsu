@@ -1,19 +1,8 @@
-# for simple touketsu package setup/install.
-#
-# Changelog:
-#
-# 06-30-2020
-#
-# apparently i had an uncommited change, so i'm just making a note here.
-#
-# 06-23-2020
-#
-# initial creation. essentially copied from the shizuka project with extra dist
-# target and more dummy targets to force target runs.
+# Makefile for simple touketsu package setup/install.
 
 CC          = gcc
 CFLAGS      =
-PYTHON      = python
+PYTHON      = python3
 SETUP_FLAGS = 
 
 .PHONY: dummy clean build dist install
