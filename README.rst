@@ -1,21 +1,7 @@
 .. README for touketsu package
 
-   Changelog:
-
-   07-05-2020
-
-   modified introduction, added notes, installation section, and logo.
-
-   06-23-2020
-
-   initial creation.
-
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/
    touketsu_logo_small.png
-
-| *last updated: 07-05-2020*
-| *file created: 06-23-2020*
-|
 
 **touketsu** is a tiny package for creating classes that disallow dynamic
 instance attribute creation or modification while preserving class inheritance.
