@@ -48,6 +48,5 @@ Documentation
 
 The documentation for ``touketsu`` is hosted on Read the Docs here__.
 
-.. __: https://github.com/phetdam/touketsu/blob/master/doc/source/
-   quickstart_plain.rst
+.. __: https://touketsu.readthedocs.io/en/latest/
 
