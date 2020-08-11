@@ -1,19 +1,4 @@
 # setup.py for touketsu
-#
-# Changelog:
-#
-# 07-03-2020
-#
-# get version from VERSION ro prevent version conflicts with conf.py
-#
-# 06-26-2020
-#
-# removed _DESC, now desc_short, and read long description from README.rst.
-# added author name, long description content type, and license.
-#
-# 06-23-2020
-#
-# initial creation. changed from distutils to setuptools
 
 from setuptools import setup
 

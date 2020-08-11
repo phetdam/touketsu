@@ -24,6 +24,11 @@ build:
 dist:
 	@$(PYTHON) setup.py sdist bdist_wheel
 
-# install in site-packages directory for importing. builds if necessary.
+# user install in site-packages directory for importing. builds if necessary.
+# under ubuntu, you will need to manually remove zipped egg to uninstall.
 install: build
+	@$(PYTHON) setup.py install --user
+
+# install to root; don't use unless absolutely necessary!
+root_install: build
 	@$(PYTHON) setup.py install
