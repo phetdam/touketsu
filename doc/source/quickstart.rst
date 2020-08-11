@@ -1,24 +1,53 @@
-.. quickstart guide for touketsu. probably will be the new user guide.
+.. quickstart guide for touketsu. sphinx-enabled formatting.
 
-   Changelog:
-
-   07-05-2020
-
-   initial creation. migrated from new README.rst.
+   see quickstart_plain.rst for the same content, but without sphinx-specific
+   restructuredtext markup.
 
 Quickstart
 ==========
 
-The most commonly used decorators in ``touketsu`` are ``immutable``, ``fancy_immutable``, ``nondynamic``, and ``fancy_nondynamic``. These four decorators make minor changes to the decorated class's docstring--``immutable`` and ``nondynamic`` respectively prepend ``"[Immutable] "`` and ``"[Nondynamic] "`` sans double quotes to the docstring of the decorated class, while the ``fancy`` variants also embed a generated restructuredText ``.. caution::`` block.
+The most commonly used decorators in ``touketsu`` are
+:func:`~touketsu.core.immutable` and :func:`~touketsu.core.nondynamic`.
+:func:`~touketsu.core.immutable` makes class instances immutable, while
+:func:`~touketsu.core.nondynamic` makes class instances nondynamic, i.e.
+existing attributes may be modified, but no new attributes can be created
+dynamically at runtime. For example, suppose we have a class ``my_class``, where
 
-  Note:
+.. code:: python
 
-  The ``.. caution::`` block content is slightly out of date. Use the non-\ ``fancy`` decorators for now.
+   class my_class:
+       """This is my class.
+
+       :param a: First parameter.
+       :param b: Second parameter.
+       """
+       def __init__(self, a = 1, b = 2):
+           self.a = a
+           self.b = b
+
+Typically, it is possible to do something like in the interpreter:
+
+>>> a = my_class()
+>>> a.d = 14
+>>> a.d
+14
+
+If ``my_class`` was decorated with :func:`~touketsu.core.nondynamic`, then an
+:class:`AttributeError` would be raised, although an assignment to an existing
+attribute like ``a.a = 13`` would be allowed.
+
+Note that :func:`~touketsu.core.immutable` and :func:`~touketsu.core.nondynamic`
+modify the docstrings of the classes they modify. Respectively, they prepend 
+``"[Immutable] "`` and ``"[Nondynamic] "``, sans double quotes, to the docstring
+of the decorated class. If no changes to the docstring are desired, use
+:func:`~touketsu.core.identity_immutable` and
+:func:`~touketsu.core.identity_nondynamic` instead.
 
 A first look
 ------------
 
-Using the decorators is very simple. Suppose we have a class ``a_class`` defined as [#]_
+Using the decorators is very simple. Suppose we have a class ``a_class`` defined
+as [#]_
 
 .. code:: python
 
@@ -30,7 +59,9 @@ Using the decorators is very simple. Suppose we have a class ``a_class`` defined
        def __init__(self, a = "a"):
            self.a = a
    
-If we wanted instances of ``a_class`` to allow modification of instance attributes but not to allow dynamic instance attribution creation, we would use the ``nondynamic`` decorator as follows:
+If we wanted instances of ``a_class`` to allow modification of instance
+attributes but not to allow dynamic instance attribution creation, we would use
+the :func:`~touketsu.core.nondynamic` decorator as follows:
 
 .. code:: python
 
@@ -43,7 +74,11 @@ If we wanted instances of ``a_class`` to allow modification of instance attribut
        def __init__(self, a = "a"):
            self.a = a
 
-If we then make an instance of ``a_class`` named ``aa``, we would be able to modify ``aa.a``, but attempting ``aa.aaa = 15`` or a similar operation would result in an ``AttributeError``. Also, the ``a_class`` docstring has now become
+If we then make an instance of ``a_class`` named ``aa``, we would be able to
+modify ``aa.a``, but attempting ``aa.aaa = 15`` or a similar operation would
+result in an ``AttributeError``.
+
+Note that the ``a_class`` docstring has now been modified into
 
 .. code:: python
 
@@ -52,9 +87,11 @@ If we then make an instance of ``a_class`` named ``aa``, we would be able to mod
    :param a: The first parameter.
    """
 
-A tool like Sphinx__ would be able to properly read this docstring and generate formatted documentation.
+Sphinx__ would be able to properly read this docstring and generate formatted
+documentation.
 
-.. [#] It is recommended that class docstrings are `PEP 257`__ compliant for best results.
+.. [#] It is recommended that class docstrings are `PEP 257`__ compliant for
+   best results.
 
 .. __: https://www.sphinx-doc.org/en/master/
 
@@ -63,48 +100,60 @@ A tool like Sphinx__ would be able to properly read this docstring and generate 
 Inheritance
 -----------
 
-When using decorators like this that disable the ability of Python class instances to dynamically create new instance attributes, we run into trouble with inheritance. Fortunately, using ``touketsu`` decorators requires minimal changes to existing code in order to preserve multiple inheritance.
+When using decorators like this that disable the ability of Python class
+instances to dynamically create new instance attributes, we run into trouble
+with inheritance. Fortunately, using ``touketsu`` decorators requires minimal
+changes to existing code in order to preserve multiple inheritance.
 
-Suppose we also have the classes ``b_class``, ``c_class``, and ``A_class``, where
+Let's define a second class ``b_class`` as follows:
 
 .. code:: python
 
    @immutable
    class b_class:
 
-       def __init__(self, b = "b", c = "c"):
+       def __init__(self, b = "b"):
            self.b = b
-	   self.c = c
 
-   class c_class(a_class, b_class):
-
-       def __init__(self, a = "aa", b = "bb", c = "cc", d = "d"):
-           a_class.__init__(self, a = a)
-	   b_class.__init__(self, b = b, c = c)
-	   self.d = d
-
-   class A_class(a_class):
-
-       def __init__(self, a = "A", aa = "AA"):
-           super().__init__(a = a)
-	   self.aa = aa
-
-Now, suppose that ``a_class`` was decorated with ``nondynamic``. Which one of these classes would raise an ``AttributeError`` upon an attempt to create a class instance?
-
-It turns out that ``A_class()`` works, and does not inherit the nondynamic property of ``a_class``, while ``c_class()`` will raise an ``AttributeError``. This is because super__ ignores the ``nondynamic`` decorator and will call the *original* bound ``__init__`` method of ``a_class``. However, the unbound ``__init__`` methods of ``b_class`` and ``a_class`` are from the decorated versions of these classes, which have ``__setattr__`` overriden. Therefore, after calling ``a_class.__init__``, an ``AttributeError`` is thrown upon execution of ``b_class.__init__``.
-
-.. __: https://docs.python.org/3/library/functions.html#super
-
-Fortunately, ``touketsu`` provides the ``orig_init`` function to wrap the unbound ``__init__`` methods to return the original class ``__init__``. Therefore, if we define ``c_class`` as
+Suppose we also have classes ``c_class`` and ``A_class``, where
 
 .. code:: python
 
    class c_class(a_class, b_class):
 
-       def __init__(self, a = "aa", b = "bb", c = "cc", d = "d"):
+       def __init__(self, a = "aa", b = "bb", c = "cc"):
+           a_class.__init__(self, a = a)
+           b_class.__init__(self, b = b)
+           self.c = c
+
+   class A_class(a_class):
+
+       def __init__(self, a = "A", aa = "AA"):
+           super().__init__(a = a)
+           self.aa = aa
+
+Now, suppose that ``a_class`` was decorated with
+:func:`~touketsu.core.nondynamic`. Which of these two classes'
+:meth:`__init__` methods would raise an :class:`AttributeError` when called?
+
+As you may have expected, both, as the bound and unbound :meth:`__init__` have
+been decorated already. Fortunately, ``touketsu`` provides the
+:func:`~touketsu.core.orig_init` function to wrap unbound :meth:`__init__`
+methods, returning the original class :meth:`__init__`. Therefore, if we define
+``c_class`` as
+
+.. code:: python
+
+   class c_class(a_class, b_class):
+
+       def __init__(self, a = "aa", b = "bb", c = "cc"):
            orig_init(a_class.__init__)(self, a = a)
-	   orig_init(b_class.__init__)(self, b = b, c = c)
-	   self.d = d
+           orig_init(b_class.__init__)(self, b = b)
+           self.c = c
 
-Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note that although ``a_class`` is decorated with ``immutable`` and ``b_class`` is decorated with ``nondynamic``, ``c_class`` is just a normal class. We can in turn decorate ``c_class``, but note that properties imparted by a ``touketsu`` decorator do **not**  persist through inheritance.
-
+Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note
+that although ``a_class`` is decorated with :func:`~touketsu.core.immutable` and
+``b_class`` is decorated with :func:`~touketsu.core.nondynamic`, ``c_class`` is
+just a normal class. We can in turn decorate ``c_class`` if we want to, but keep
+in mind that properties imparted by a ``touketsu`` decorator do **not** persist
+through inheritance.
