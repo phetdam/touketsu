@@ -3,6 +3,10 @@
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/
    touketsu_logo_small.png
 
+.. image:: https://readthedocs.org/projects/touketsu/badge/?version=latest
+   :target: https://touketsu.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 **touketsu** is a tiny package for creating classes that disallow dynamic
 instance attribute creation or modification while preserving class inheritance.
 This project was inspired by all the unfortunate incidences where fat-finger
