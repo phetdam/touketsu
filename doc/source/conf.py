@@ -2,11 +2,15 @@
 #
 # modified by Derek Huang for touketsu project.
 #
-# note: sphinx 1.8.5 compatible for building on read the docs.
-#
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- read the docs setup -----------------------------------------------------
+
+import os
+# boolean for whether or not we are building on read the docs
+_ON_RTD = os.environ.get("READTHEDOCS") == "True"
 
 # -- Path setup --------------------------------------------------------------
 
@@ -14,7 +18,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-import os
 from os.path import dirname, abspath
 import sys
 # change delimiter style based on whether system os NT or POSIX
@@ -22,7 +25,8 @@ _delim = "/"
 if os.name == "nt": _delim = "\\"
 # back up two directory levels with correct delimiters
 _PROJECT_ROOT = _delim.join(dirname(abspath(__file__)).split(_delim)[:-2])
-sys.path.insert(0, _PROJECT_ROOT)
+# don't insert if on read the docs
+if not _ON_RTD: sys.path.insert(0, _PROJECT_ROOT)
 
 # -- Project information -----------------------------------------------------
 
@@ -37,6 +41,9 @@ with open(_PROJECT_ROOT + _delim + "VERSION", "r") as vf:
 version = release
 
 # -- General configuration ---------------------------------------------------
+
+# specifiy minimum sphinx version (3)
+needs_sphinx = "3.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your own.
@@ -63,9 +70,9 @@ exclude_patterns = []
 # __init__.py will be looked for and their order will be maintained. since
 # undoc-members was not specified, members with no docstring are skipped.
 autodoc_default_options = {
-    "members": None,
-    "private-members": None,
-    "show-inheritance": None,
+    "members": True,
+    "private-members": True,
+    "show-inheritance": True,
     "special-members": "__repr__"
 }
 
@@ -85,11 +92,11 @@ intersphinx_mapping = {
 
 # -- Options for HTML output -------------------------------------------------
 
-# html theme (my favorite theme); register as extension
+# html theme (my favorite theme)
 html_theme = "sphinx_rtd_theme"
 extensions.append(html_theme)
 
-# no HTML theme options
+# HTML theme options for local RTD build
 html_theme_options = {
     # don't display version on documentation sidebar header
     "display_version": False,
