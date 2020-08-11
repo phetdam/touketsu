@@ -2,6 +2,8 @@
 #
 # modified by Derek Huang for touketsu project.
 #
+# note: sphinx 1.8.5 compatible for building on read the docs.
+#
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -61,9 +63,9 @@ exclude_patterns = []
 # __init__.py will be looked for and their order will be maintained. since
 # undoc-members was not specified, members with no docstring are skipped.
 autodoc_default_options = {
-    "members": True,
-    "private-members": True,
-    "show-inheritance": True,
+    "members": None,
+    "private-members": None,
+    "show-inheritance": None,
     "special-members": "__repr__"
 }
 
