@@ -26,7 +26,7 @@ if os.name == "nt": _delim = "\\"
 # back up two directory levels with correct delimiters
 _PROJECT_ROOT = _delim.join(dirname(abspath(__file__)).split(_delim)[:-2])
 # don't insert if on read the docs
-sys.path.insert(0, _PROJECT_ROOT)
+if not _ON_RTD: sys.path.insert(0, _PROJECT_ROOT)
 
 # -- Project information -----------------------------------------------------
 
