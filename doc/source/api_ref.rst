@@ -6,8 +6,7 @@ API Reference
 This page lists the main ``touketsu`` components. Please refer to the
 :doc:`./quickstart` for usage details.
 
-Decorators
-----------
+Below we list the main decorators that will be accessed by users.
 
 .. autosummary::
    :toctree: generated
@@ -18,7 +17,8 @@ Decorators
    ~touketsu.core.nondynamic
    ~touketsu.core.identity_nondynamic
 
-The above decorators are produced by the factory method below.
+These are produced by the factory method
+:func:`~touketsu.core.class_decorator_factory` listed below.
 
 .. autosummary::
    :toctree: generated
