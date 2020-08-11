@@ -1,38 +1,4 @@
-# core code for package touketsu
-#
-# Changelog:
-#
-# 07-07-2020
-#
-# cleaned up/added docstrings for class_decorator_factory, fancy_immutable, and
-# identity_immutable. little actual work done because summer internship started.
-#
-# 07-05-2020
-#
-# added decorators; working on decorator factory. moved _classdocmod and
-# constants to _utils, now utils. figured out how to get the decorators to work
-# with inheritance structures; we balling. shorten AttributeErrors. remove bug
-# in unrestrict that ended up giving classes their superclass __doc__ attribute.
-# clean up some docstrings and correct some spacing.
-#
-# 07-03-2020
-#
-# added class docstring, changed references to examples.rst to user_guide.rst.
-# remove example from FrozenClass to user_guide.rst; working on NDClass
-# docstring which will later be migrated to user_guide.rst as well.
-#
-# 07-02-2020
-#
-# renamed FrozenClass to NDClass, as a "frozen" class should be immutable. also
-# [re]defined FrozenClass as a mixin for immutable class instances. modified
-# docstring for NDClass with more detail and started docstring for FrozenClass.
-#
-# 06-23-2020
-#
-# initial creation. added FrozenClass implementation. added multiple inheritance
-# example to illustrate how to use the FrozenClass implementation.
-
-__doc__ = """Core package code.
+__doc__ = """Core package code for ``touketsu``.
 
 Contains the decorators and decorator factory that are the package's lifeblood.
 """
@@ -47,9 +13,7 @@ from .utils import classdocmod
 # set up warnings
 warnings.simplefilter("always")
 
-def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
-                            use_tabs = False, fancy_caution = None,
-                            fancy_note = None):
+def class_decorator_factory(dectype = None, docmod = None):
     """``touketsu`` class decorator factory.
 
     The returned decorator is able to automatically modify the docstrings of
@@ -71,8 +35,8 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
         make a class instance nondynamic.
     :type dectype: str
     :param docmod: How to modify the docstring of the class the returned
-        decorator is applied to. Either ``"fancy"``, ``"brief"``, or ``"identity"``.
-        The default value is ``"brief"``.
+        decorator is applied to. Either ``"brief"``, or ``"identity"``. The
+        default value is ``"brief"``.
     :type docmod: str, optional
     :param docstr: The replacement docstring, if ``docmod = "manual"``. If
         ``docmod != "manual"``, then ``docstr`` is ignored.
@@ -118,14 +82,15 @@ def class_decorator_factory(dectype = None, docmod = None, docindent = "auto",
         # perform docstring modification
         classdocmod(cls, dectype, docmod = docmod)
         # override __setattr__ and __init__ of class + preserve original
-        # signature. it is known that sphinx doesn't work well with functools.wraps.
+        # signature. sphinx doesn't work well with functools.wraps.
         cls.__setattr__ = _touketsu_restricted_setattr
+        # warn if the class doesn't override object __init__ method
         try: cls.__init__.__signature__ = signature(cls.__init__)
         except AttributeError:
             warnings.warn("Class without __init__ decorated. object.__init__ "
                           "signature will be displayed instead.")
         cls.__init__ = init_wrapper(cls.__init__)
-        # also bind original __init__ method to new __init__ (so orig_init) works
+        # also bind original __init__ method to new __init__ so orig_init works
         cls.__init__._touketsu_orig__init__ = _orig__init__
         # return class
         return cls
@@ -139,11 +104,11 @@ def unrestrict(cls):
 
     For any class decorated by a decorator returned by 
     :func:`~touketsu.core.class_decorator_factory`, :func:`unrestrict` removes
-    the decorator's effect, restoring the original :meth:`__init__` and 
-    :meth:`~object.__setattr__` methods.
+    the decorator's effect, redefining the class and restoring the original
+    :meth:`__init__` and :meth:`~object.__setattr__` methods.
 
-    Useful for temporarily removing a ``touketsu`` decorator restriction from
-    a decorated class.
+    Useful for removing a ``touketsu`` decorator restriction from a decorated
+    class during runtime.
 
     .. note::
 
@@ -220,7 +185,7 @@ def immutable(cls):
     """Decorator to make a class immutable. Imparts a minor docstring change.
 
     Equivalent to :func:`class_decorator_factory` with ``dectype = "immutable"``
-    and ``decmod = "brief"``. The standard decorator to use for making a class
+    and ``docmod = "brief"``. The standard decorator to use for making a class
     immutable.
 
     .. note::
@@ -239,7 +204,7 @@ def immutable(cls):
 
 
 def identity_immutable(cls):
-    """Decorator to make a class immutable, with no docstring changes.
+    """Decorator to make a class immutable. Original docstring is unchanged.
 
     .. caution::
 
@@ -263,23 +228,18 @@ def identity_immutable(cls):
     return class_decorator_factory("immutable", "identity")(cls)
 
 
-def fancy_immutable(cls):
-    """Decorator to make a class immutable, with more fancy docstring changes.
+def nondynamic(cls):
+    """Decorator to make a class nondynamic. Imparts a minor docstring change.
 
-    Equivalent to :func:`class_decorator_factory` with ``dectype = "immutable"``
-    and ``decmod = "fancy"``. The decorator to use for making a class immutable
-    while also providing a more visible indication, through the use of a
-    ``.. caution::`` block, that inheritance must be considered more carefully.
+    Equivalent to :func:`class_decorator_factory` with
+    ``dectype = "nondynamic"`` and ``docmod = "brief"``. The standard decorator
+    to use for making a class nondynamic.
 
     .. note::
 
        Do not apply to a previously decorated class. Instead, use
        :func:`unrestrict` first to return the class to its original state before
-       applying :func:`fancy_immutable`.    
-
-    .. note::
-
-       I really should put this warning in :doc:`../api_ref` instead.
+       applying :func:`nondynamic`.
 
     :param cls: The class to decorate.
     :type cls: type
@@ -287,136 +247,22 @@ def fancy_immutable(cls):
         instances.
     :rtype: type
     """
-    return class_decorator_factory("immutable", "fancy")(cls)
-
-
-def nondynamic(cls):
     return class_decorator_factory("nondynamic", "brief")(cls)
 
 
 def identity_nondynamic(cls):
+    """Decorator to make a class nondynamic. Original docstring is unchanged.
+
+    .. note::
+
+       Do not apply to a previously decorated class. Instead, use
+       :func:`unrestrict` first to return the class to its original state before
+       applying :func:`identity_nondynamic`.
+
+    :param cls: The class to decorate.
+    :type cls: type
+    :returns: A decorated version of the original class with immutable
+        instances.
+    :rtype: type
+    """
     return class_decorator_factory("nondynamic", "identity")(cls)
-
-
-def fancy_nondynamic(cls):
-    return class_decorator_factory("nondynamic", "fancy")(cls)
-
-
-@fancy_nondynamic
-class FrozenClass:
-    """A mixin class for defining immutable class instances.
-
-    Classes inheriting :class:`FrozenClass` can be defined to have permanently
-    immutable instances, i.e. no dynamic instance attribute creation and no
-    modification of existing attributes.
-
-    .. note::
-
-       Class instances still have the :attr:`__dict__` property, which can be
-       manually modified.
-
-    Simply inheriting from :class:`FrozenClass` does not do anything by itself.
-    To make all instances of the class inheriting :class:`FrozenClass` are
-    immutable, after definition of all instance attributes in the subclass's
-    :meth:`__init__` method, the :meth:`_freeze` method should be called.
-
-    See :doc:`../user_guide` for details examples on using :class:`FrozenClass`.
-    """
-    __frozen = False
-
-    def __setattr__(self, key, value):
-        # if frozen, raise AttributeError
-        if self.__frozen == True:
-            raise AttributeError("FrozenClass instances cannot dynamically "
-                                 "create new instance attributes nor modify "
-                                 "existing instance attributes")
-        self.__dict__[key] = value
-
-    def _freeze(self):
-        """Freeze an instance of :class:`FrozenClass`.
-
-        After freezing, no new instance attributes may be created and no
-        existing instance attributes may be modified using :meth:`__setattr__`.
-        However, the :attr:`__dict__` attribute may still be modified.
-        """
-        self.__frozen = True
-
-    def __init__(self, a = 1, b = 2): self.a = a
-
-
-@fancy_immutable
-class a_class(FrozenClass):
-
-    def __init__(self, a = "aa", b = "bb"):
-        #super().__init__(a = a, b = b) # this works; decorator is ignored
-        orig_init(FrozenClass.__init__)(self, a = a, b = b) # also works; returns original __init__
-        self.b = a + b
-
-class NDClass:
-    """A mixin class for disallowing dynamic instance attribute creation. [#]_
-
-    Classes inheriting :class:`NDClass` can allow modification of existing
-    instance attributes while disallowing dynamic attribute creation using
-    :meth:`__setattr__` for a class instance at runtime.
-
-    .. note::
-
-       Class instances still have the :attr:`__dict__` property, which can be
-       manually modified.
-
-    To 
-    See :doc:`../user_guide`
-
-    For generality and to show how the :class:`NDClass` works well with
-    multiple inheritance, consider the following example. Suppose we want to
-    define a new class ``c_class`` that inherits from ``a_class`` and
-    ``b_class``, whose definitions can be found in the :class:`FrozenClass`
-    docstring above. The ``c_class`` definition does not introduce additional
-    instance attributes, but overrides some keyword argument defaults for the 
-    :meth:`__init__` methods for ``a_class`` and ``b_class``. If we want to
-    disable dynamic instance attribute creation for ``c_class``, we could define
-    ``c_class`` as follows:
-
-    .. code:: python
-
-       class c_class(a_class, b_class, NDClass):
-
-           def __init__(self, a, b = "bbb", c = "ccc", d = "ddd"):
-               a_class.__init__(self, a, b = b)
-               b_class.__init__(self, c = c, d = d)
-               self._make_nondynamic()
-
-    The :meth:`_make_nondynamic` call will disable dynamic instance attribute
-    creation. Any attempts to create an instance attribute at runtime will
-    result in an :class:`AttributeError`. Note that :meth:`_make_nondynamic` 
-    should be treated as an irreversible operation.
-
-    .. warning::
-
-       :meth:`_make_nondynamic` **must** be called after initialization of
-       parent classes and any other instance attribute definitions or an
-       :class:`AttributeError` will be raised by :meth:`__setattr__`.
-
-    .. [#] :class:`NDClass` is an abbreviation for NonDynamicClass.
-    """
-    __nondynamic = False
-
-    def __setattr__(self, key, value):
-        # if class instance is nondynamic and dynamic attribute creation is
-        # attempted, raise AttributeError
-        if (self.__nondynamic == True) and (key not in self.__dict__):
-            raise AttributeError("NDClass instances cannot dynamically create "
-                                 "new instance attributes")
-        self.__dict__[key] = value
-
-    def _make_nondynamic(self):
-        """Make an instance of :class:`NDClass` nondynamic.
-
-        No new instance attributes may be created using :meth:`__setattr__`
-        after calling :meth:`_make_nondynamic` and a class instance made
-        nondynamic cannot be made dynamic again. However, as noted, the 
-        :attr:`__dict__` attribute may still be modified.
-        """
-        self.__nondynamic = True
-
-
