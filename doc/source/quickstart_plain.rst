@@ -41,8 +41,8 @@ they modify. Respectively, they prepend ``"[Immutable] "`` and
 class. If no changes to the docstring are desired, use ``identity_immutable``
 and ``identity_nondynamic`` instead.
 
-A first look
-------------
+A simple example
+----------------
 
 Using the decorators is very simple. Suppose we have a class ``a_class`` defined
 as [#]_
@@ -155,6 +155,5 @@ function to wrap unbound ``__init__`` methods, returning the original class
 
 Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note
 that although ``a_class`` is decorated with ``immutable`` and ``b_class`` is
-decorated with ``nondynamic``, ``c_class`` is just a normal class. We can in
-turn decorate ``c_class`` if we want to, but keep in mind that properties
-imparted by a ``touketsu`` decorator do **not** persist through inheritance.
+decorated with ``nondynamic``, ``c_class`` is just a normal class. We can then
+in turn decorate ``c_class`` if we want to.

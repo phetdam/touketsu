@@ -43,8 +43,8 @@ of the decorated class. If no changes to the docstring are desired, use
 :func:`~touketsu.core.identity_immutable` and
 :func:`~touketsu.core.identity_nondynamic` instead.
 
-A first look
-------------
+A simple example
+----------------
 
 Using the decorators is very simple. Suppose we have a class ``a_class`` defined
 as [#]_
@@ -160,6 +160,4 @@ methods, returning the original class :meth:`__init__`. Therefore, if we define
 Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note
 that although ``a_class`` is decorated with :func:`~touketsu.core.immutable` and
 ``b_class`` is decorated with :func:`~touketsu.core.nondynamic`, ``c_class`` is
-just a normal class. We can in turn decorate ``c_class`` if we want to, but keep
-in mind that properties imparted by a ``touketsu`` decorator do **not** persist
-through inheritance.
+just a normal class. We can then in turn decorate ``c_class`` if we want to.
