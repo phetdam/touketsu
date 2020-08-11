@@ -3,19 +3,8 @@
 API Reference
 =============
 
-This page lists the two classes that form of the core of this package. For
-detailed examples and best practices for using the classes in this package,
-please refer to the :doc:`./user_guide`.
-
-Classes
--------
-
-.. autosummary::
-   :toctree: generated
-   :template: class.rst
-
-   ~touketsu.core.FrozenClass
-   ~touketsu.core.NDClass
+This page lists the main ``touketsu`` components. Please refer to the
+:doc:`./quickstart` for usage details.
 
 Decorators
 ----------
@@ -27,23 +16,22 @@ Decorators
    ~touketsu.core.immutable
    ~touketsu.core.identity_immutable
    ~touketsu.core.nondynamic
-   ~touketsu.core.identity_immutable
+   ~touketsu.core.identity_nondynamic
 
-If these decorators are too limited for one's use case, ``touketsu`` also
-provides a simple decorator factory function for users to write their own
-modified class decorators.
+The above decorators are produced by the factory method below.
 
 .. autosummary::
    :toctree: generated
 
    ~touketsu.core.class_decorator_factory
 
-The class decorator :func:`~touketsu.core.unrestrict` can be used to undo the
-effect of an applied decorator and return the class back to its original
-undecorated state, removing all extra class attributes introduced by decoration.
+The class decorator :func:`~touketsu.core.unrestrict` undos the effect of an
+applied decorator, returning the class back to its original undecorated state.
+If applied to a non-decorated class, it returns the class itself.
 
 .. autosummary::
    :toctree: generated
+   :template: decorator.rst
 
    ~touketsu.core.unrestrict
 
@@ -53,5 +41,6 @@ subclassing a decorated class.
 
 .. autosummary::
    :toctree: generated
+   :template: decorator.rst
 
    ~touketsu.core.orig_init
