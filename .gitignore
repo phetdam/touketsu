@@ -1,15 +1,9 @@
-# Changelog:
-#
-# 06-26-2020
-#
-# added ./touketsu.egg-info and emacs autosave files to .gitignore.
-#
-# 06-23-2020
-#
-# initial creation. added /build, /dist, __pycache__ to .gitignore.
-
+# project .gitignore
 /build
 /dist
+/doc/build/*
+/doc/source/generated/*
+/.vscode
 **/__pycache__
 /touketsu.egg-info
 **/*~
