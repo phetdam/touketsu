@@ -13,17 +13,6 @@ This project was inspired by all the unfortunate incidences where fat-finger
 errors led to the creation of a new instance attribute instead of the
 modification of an existing instance attribute.
 
-  Note: [#]_
-
-  The code is undergoing significant changes but is somewhat ready for use.
-  Proper documentation is in the process of being written; currently 
-  ``doc/source`` contains a very old and no longer relevant set of documentation
-  from the early stages of the project. Please take a look if you are curious.
-
-.. [#] One may notice that I used a block quote, not the ``.. note::`` 
-   directive. This renders better in Github when there is no HTML theme in place
-   to generate fancier output.
-
 Installation
 ------------
 
@@ -39,7 +28,9 @@ Install from source by simply ``cd``\ ing to a preferred directory and typing
    git clone https://github.com/phetdam/touketsu
    make install
 
-Then check that the package is properly working by trying an example in the 
+This will perform a user install by default.
+
+After installing, check that the package is properly working using the
 interpreter, for example
 
 >>> from touketsu import immutable
@@ -52,7 +43,10 @@ interpreter, for example
 Attempting to execute ``aa.a = 5`` will result in an ``AttributeError``, as 
 ``a_class`` instances are immutable.
 
-For a quick guide to usage, see the `quickstart guide`__.
+Documentation
+-------------
+
+The documentation for ``touketsu`` is hosted on Read the Docs here__.
 
 .. __: https://github.com/phetdam/touketsu/blob/master/doc/source/
    quickstart_plain.rst
