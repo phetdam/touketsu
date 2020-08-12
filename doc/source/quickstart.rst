@@ -78,7 +78,7 @@ the :func:`~touketsu.core.nondynamic` decorator as follows:
 
 If we then make an instance of ``a_class`` named ``aa``, we would be able to
 modify ``aa.a``, but attempting ``aa.aaa = 15`` or a similar operation would
-result in an ``AttributeError``.
+result in an :class:`AttributeError`.
 
 Note that the ``a_class`` docstring has now been modified into
 
@@ -157,7 +157,8 @@ methods, returning the original class :meth:`__init__`. Therefore, if we define
            orig_init(b_class.__init__)(self, b = b)
            self.c = c
 
-Now no ``AttributeError`` will be thrown when ``c_class()`` is executed. Note
-that although ``a_class`` is decorated with :func:`~touketsu.core.immutable` and
-``b_class`` is decorated with :func:`~touketsu.core.nondynamic`, ``c_class`` is
-just a normal class. We can then in turn decorate ``c_class`` if we want to.
+Now no :class:`AttributeError` will be thrown when ``c_class()`` is executed.
+Note that although ``a_class`` is decorated with
+:func:`~touketsu.core.immutable` and ``b_class`` is decorated with
+:func:`~touketsu.core.nondynamic`, ``c_class`` is just a normal class. We can
+then in turn decorate ``c_class`` if we want to.
