@@ -3,6 +3,7 @@ __doc__ = """Core package code for ``touketsu``.
 Contains the decorators and decorator factory that are the package's lifeblood.
 """
 
+from abc import ABCMeta
 from copy import deepcopy
 from inspect import signature
 from functools import wraps
@@ -50,8 +51,8 @@ def class_decorator_factory(dectype = None, docmod = None):
 
     # decorator for a class
     def wrapper(cls):
-        # raise TypeError if this is not a type
-        if cls.__class__.__name__ != "type":
+        # raise TypeError if this is not a type or abc.ABCMeta
+        if cls.__class__ not in (type, ABCMeta):
             raise TypeError("{0}: expected type, received {1}"
                             .format(_fn, type(cls)))
         # class attribute indicating restriction imposed by touketsu
