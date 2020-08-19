@@ -53,8 +53,8 @@ def class_decorator_factory(dectype = None, docmod = None):
     def wrapper(cls):
         # raise TypeError if this is not a type or abc.ABCMeta
         if cls.__class__ not in (type, ABCMeta):
-            raise TypeError("{0}: expected type, received {1}"
-                            .format(_fn, type(cls)))
+            raise TypeError(f"{_fn}: expected type or abc.ABCMeta, received "
+                            f"{type(cls)}")
         # class attribute indicating restriction imposed by touketsu
         cls._touketsu_restriction = None
         # original class docstring, original class __init__ and __setattr__
@@ -73,8 +73,8 @@ def class_decorator_factory(dectype = None, docmod = None):
             elif (self._touketsu_restriction == "nondynamic") and \
                  (key != "_touketsu_restriction") and (not hasattr(self, key)):
                 raise AttributeError("Nondynamic class instance")
-            # use original __setattr__; see _orig_setattr__
-            self.__setattr__._touketsu_orig__setattr__(self, key, value)
+            # use original __setattr__; see _orig__setattr__
+            _orig__setattr__(self, key, value)
 
         # wrapper for class __init__ method
         def init_wrapper(init):
