@@ -237,5 +237,5 @@ Note that we do not need to decorate the :func:`classmethod`
 ``special_class_method`` with :func:`~touketsu.core.urt_method`, as ``touketsu``
 restrictions only affect the *instances* of a class, not the class itself.
 ``method_two`` also does not need to be decorated with
-:func:`~touketsu.core.urt_method` since it does not create or modif instance
+:func:`~touketsu.core.urt_method` since it does not create or modify instance
 attributes.
