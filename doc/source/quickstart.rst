@@ -99,6 +99,7 @@ documentation.
 
 .. __: https://www.python.org/dev/peps/pep-0257/
 
+
 Inheritance
 -----------
 
@@ -162,3 +163,79 @@ Note that although ``a_class`` is decorated with
 :func:`~touketsu.core.immutable` and ``b_class`` is decorated with
 :func:`~touketsu.core.nondynamic`, ``c_class`` is just a normal class. We can
 then in turn decorate ``c_class`` if we want to.
+
+
+Class and instance methods
+--------------------------
+
+It remains to address how class and instance methods are treated in classes
+decorated by ``touketsu`` class decorators like
+:func:`~touketsu.core.nondynamic`. For example, we may have a class
+``some_class`` that is defined as
+
+.. code:: python
+
+   class some_class:
+
+       def __init__(self, a = "a", b = "b"):
+           self.a = a
+           self.b = b
+
+       @classmethod
+       def special_class_method(cls):
+           cls.aa = 1000
+           return cls(a = "A")
+
+       def method_one(self, val):
+           self.aaa = val
+
+       def method_two(self):
+           if hasattr(self, aa) and hasattr(self, aaa):
+               return 2
+           if hasattr(self, aa):
+               return 0
+           elif hasattr(self, aaa):
+               return 1
+           return -1
+
+Suppose we want class instances to be immutable. We cannot just decorate
+``some_class`` with :func:`~touketsu.core.immutable`, since ``method_one``
+attempts to create a new instance attribute, which will cause an
+:class:`AttributeError` to be raised upon call. Instead, we would define
+``some_class`` as follows:
+
+.. code:: python
+
+   from touketsu import immutable, urt_method
+
+   @immutable
+   class some_class:
+
+       def __init__(self, a = "a", b = "b"):
+           self.a = a
+           self.b = b
+
+       @classmethod
+       def special_class_method(cls):
+           cls.aa = 1000
+           return cls(a = "A")
+
+       @urt_method
+       def method_one(self, val):
+           self.aaa = val
+
+       def method_two(self):
+           if hasattr(self, aa) and hasattr(self, aaa):
+               return 2
+           if hasattr(self, aa):
+               return 0
+           elif hasattr(self, aaa):
+               return 1
+           return -1
+
+Note that we do not need to decorate the :func:`classmethod`
+``special_class_method`` with :func:`~touketsu.core.urt_method`, as ``touketsu``
+restrictions only affect the *instances* of a class, not the class itself.
+``method_two`` also does not need to be decorated with
+:func:`~touketsu.core.urt_method` since it does not create, delete, or modify
+instance attributes.

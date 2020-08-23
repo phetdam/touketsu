@@ -25,15 +25,15 @@ These are produced by the factory method
 
    ~touketsu.core.class_decorator_factory
 
-The class decorator :func:`~touketsu.core.unrestrict` undos the effect of an
-applied decorator, returning the class back to its original undecorated state.
-If applied to a non-decorated class, it returns the class itself.
+The class decorator :func:`~touketsu.core.urt_class` undos the effect of an
+applied class decorator, returning the class back to its original undecorated
+state. If applied to a non-decorated class, it returns the class itself.
 
 .. autosummary::
    :toctree: generated
    :template: decorator.rst
 
-   ~touketsu.core.unrestrict
+   ~touketsu.core.urt_class
 
 The :func:`~touketsu.core.orig_init` can be used to gain access to a class's
 original undecorated :func:`__init__` function, which is necessary when
@@ -44,3 +44,13 @@ subclassing a decorated class.
    :template: decorator.rst
 
    ~touketsu.core.orig_init
+
+The decorator :func:`~touketsu.core.urt_method` temporarily removes a
+``touketsu`` restriction from a class instance during the instance method's
+execution.
+
+.. autosummary::
+   :toctree: generated
+   :template: decorator.rst
+
+   ~touketsu.core.urt_method
