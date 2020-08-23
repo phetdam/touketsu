@@ -200,14 +200,14 @@ def urt_method(meth):
 
     ``method_one`` needs to be decorated with :func:`urt_method` since it will
     create an instance attribute ``b`` when called. However, ``method_two``
-    does not need to be decorated since it is not creating, deleting, or
-    modifying any instance attributes. The :func:`classmethod`
-    ``a_class_method`` also does not need to be decorated since ``touketsu``
-    restrictions only apply to class *instances*, not classes themselves.
+    does not need to be decorated since it is not creating or modifying any
+    instance attributes. The :func:`classmethod` ``a_class_method`` also does
+    not need to be decorated since ``touketsu`` restrictions only apply to class
+    *instances*, not the classes themselves.
     
-    :param meth: A class or instance method
-    :type meth: function or classmethod
-    :returns: A decorated class or instance method that allows attribute
+    :param meth: An unbound instance method
+    :type meth: function
+    :returns: A decorated unbound instance method that allows instance attribute
         modification and creation during its execution.
     :rtype: function
     """
@@ -220,13 +220,6 @@ def urt_method(meth):
         # note try-catch since if an exception is thrown and not caught the
         # restriction will not be reapplied
         try:
-            # if classmethod, need to call through __get__
-            """
-            if isinstance(meth, classmethod):
-                res = meth.__get__(obj, *args, **kwargs)()
-            else: res = meth(obj, *args, **kwargs)
-            """
-            print(type(meth))
             res = meth(obj, *args, **kwargs)
             # restore original restriction (don't need object.__setattr__)
             obj._touketsu_restriction = restriction
