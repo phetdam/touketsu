@@ -26,8 +26,9 @@ def class_decorator_factory(dectype = None, docmod = None):
        It is possible to tell which classes have been wrapped a decorator
        returned by :func:`class_decorator_factory` because the decoration
        process introduces additional class attributes prepended by 
-       ``_touketsu``. Using :func:`unrestrict` on any of these decorated classes
-       undos the decoration and returns the class to its original definition.
+       ``_touketsu``. Using :func:`urt_class` on any of these decorated
+       classes undos the decoration and returns the class to its original
+       definition.
 
     .. __: https://www.python.org/dev/peps/pep-0257/
 
@@ -39,9 +40,9 @@ def class_decorator_factory(dectype = None, docmod = None):
         decorator is applied to. Either ``"brief"``, or ``"identity"``. The
         default value is ``"brief"``.
     :type docmod: str, optional
-    :param docstr: The replacement docstring, if ``docmod = "manual"``. If
-        ``docmod != "manual"``, then ``docstr`` is ignored.
-    :type docstr: str, optional
+    :returns: A class decorator that either makes disables dynamic attribute
+        creation for class instances or makes class instances immutable.
+    :type: function
     """
     _fn = class_decorator_factory.__name__
     # if dectype is not valid, raise error
@@ -69,9 +70,8 @@ def class_decorator_factory(dectype = None, docmod = None):
         def _touketsu_restricted_setattr(self, key, value):
             if self._touketsu_restriction == "immutable":
                 raise AttributeError("Immutable class instance")
-            # disable manual "unrestriction" of the restricted class
             elif (self._touketsu_restriction == "nondynamic") and \
-                 (key != "_touketsu_restriction") and (not hasattr(self, key)):
+                (not hasattr(self, key)):
                 raise AttributeError("Nondynamic class instance")
             # use original __setattr__; see _orig__setattr__
             _orig__setattr__(self, key, value)
@@ -110,11 +110,11 @@ def class_decorator_factory(dectype = None, docmod = None):
     return wrapper
 
 
-def unrestrict(cls):
-    """Remove the nondynamic or immutable restriction from a class.
+def urt_class(cls):
+    """Return the original class from a ``touketsu`` decorated class.
 
     For any class decorated by a decorator returned by 
-    :func:`~touketsu.core.class_decorator_factory`, :func:`unrestrict` removes
+    :func:`~touketsu.core.class_decorator_factory`, :func:`urt_class` removes
     the decorator's effect, restoring the original :meth:`__init__` and
     :meth:`.__setattr__` methods.
 
@@ -123,11 +123,12 @@ def unrestrict(cls):
 
     .. note::
 
-       If the class is undecorated, then :func:`unrestrict` will have no effect.
+       If the class is undecorated, then :func:`urt_class` will have no
+       effect.
 
     .. caution::
 
-       Calling :func:`unrestrict` on subclasses of classes decorated by a
+       Calling :func:`urt_class` on subclasses of classes decorated by a
        decorator returned from :func:`~touketsu.core.class_decorator_factory`
        will result in warnings being raised. The decorator restrictions do not
        persist through the inheritance structure.
@@ -166,6 +167,100 @@ def unrestrict(cls):
     return cls
 
 
+def urt_method(meth):
+    """Decorate class or instance methods to allow temporary attribute creation.
+    
+    Apply :func:`urt_method` to class or instance methods to temporarily allow
+    dynamic attribute creation within the method. For example, suppose we
+    have a class ``a_class``, where
+    
+    .. code:: python
+    
+       from touketsu import nondynamic
+       
+       @nondynamic
+       class a_class:
+       
+           def __init__(self, a = "a"):
+               self.a = a
+               
+           def a_method(self, val):
+               self.b = val
+               
+    If we were to try ``aa = a_class()`` in the interpreter and then attempt
+    something like ``aa.a_method(20)``, we would get an :class:`AttributeError`
+    since ``aa`` has been decorated with :func:`nondynamic`. However, if we
+    define ``a_class`` as
+    
+    .. code:: python
+    
+       from touketsu import nondynamic, urt_method
+    
+       @nondynamic
+       class a_class:
+       
+           def __init__(self, a = "a"):
+               self.a = a
+           
+           @urt_method
+           def a_method(self, val):
+               self.b = val
+
+    Then the following sequence of calls would work perfectly.
+    
+    >>> aa = a_class()
+    >>> aa.a_method(20)
+    >>> aa.b
+    20
+    
+    When applying :func:`urt_class` to a class method, make sure that
+    :func:`urt_class` is applied after :func:`classmethod`, as shown in the
+    example class below.
+    
+    .. code:: python
+    
+       from touketsu import immutable, urt_method
+       
+       class b_class:
+       
+           def __init__(self, b = "b"):
+               self.b = b
+               
+           @urt_method
+           @classmethod
+           def b_class_method(cls):
+               self.bb = 1000
+    
+    :param meth: A class or instance method
+    :type meth: function or classmethod
+    :returns: A decorated class or instance method that allows attribute
+        modification and creation during its execution.
+    :rtype: function
+    """
+    # wrapper for the method; note can be class or instance method
+    @wraps(meth)
+    def meth_wrapper(obj, *args, **kwargs):
+        # temporarily unrestrict class/instance
+        restriction = obj._touketsu_restriction
+        object.__setattr__(obj, "_touketsu_restriction", None)
+        # note try-catch since if an exception is thrown and not caught the
+        # restriction will not be reapplied
+        try:
+            # if classmethod, need to call through __get__
+            if isinstance(meth, classmethod):
+                res = meth.__get__(obj, *args, **kwargs)()
+            else: res = meth(obj, *args, **kwargs)
+            # restore original restriction (don't need object.__setattr__)
+            obj._touketsu_restriction = restriction
+            return res
+        except Exception as e:
+            # restore restriction and raise (don't need object.__setattr__)
+            obj._touketsu_restriction = restriction
+            raise e
+
+    return meth_wrapper
+
+
 def orig_init(init):
     """Return original :meth:`__init__` from decorated :meth:`__init__`.
 
@@ -200,7 +295,7 @@ def immutable(cls):
     .. note::
 
        Do not apply to a previously decorated class. Instead, use
-       :func:`unrestrict` first to return the class to its original state before
+       :func:`urt_class` first to return the class to its original state before
        applying :func:`immutable`.
 
     :param cls: The class to decorate.
@@ -224,7 +319,7 @@ def identity_immutable(cls):
     .. note::
 
        Do not apply to a previously decorated class. Instead, use
-       :func:`unrestrict` first to return the class to its original state before
+       :func:`urt_class` first to return the class to its original state before
        applying :func:`identity_immutable`.
 
     :param cls: The class to decorate.
@@ -246,7 +341,7 @@ def nondynamic(cls):
     .. note::
 
        Do not apply to a previously decorated class. Instead, use
-       :func:`unrestrict` first to return the class to its original state before
+       :func:`urt_class` first to return the class to its original state before
        applying :func:`nondynamic`.
 
     :param cls: The class to decorate.
@@ -270,7 +365,7 @@ def identity_nondynamic(cls):
     .. note::
 
        Do not apply to a previously decorated class. Instead, use
-       :func:`unrestrict` first to return the class to its original state before
+       :func:`urt_class` first to return the class to its original state before
        applying :func:`identity_nondynamic`.
 
     :param cls: The class to decorate.
