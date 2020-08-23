@@ -168,68 +168,42 @@ def urt_class(cls):
 
 
 def urt_method(meth):
-    """Decorate class or instance methods to allow temporary attribute creation.
+    """Decorate instance methods to temporarily allow attribute creation.
     
-    Apply :func:`urt_method` to class or instance methods to temporarily allow
-    dynamic attribute creation within the method. For example, suppose we
-    have a class ``a_class``, where
-    
-    .. code:: python
-    
-       from touketsu import nondynamic
-       
-       @nondynamic
-       class a_class:
-       
-           def __init__(self, a = "a"):
-               self.a = a
-               
-           def a_method(self, val):
-               self.b = val
-               
-    If we were to try ``aa = a_class()`` in the interpreter and then attempt
-    something like ``aa.a_method(20)``, we would get an :class:`AttributeError`
-    since ``aa`` has been decorated with :func:`nondynamic`. However, if we
-    define ``a_class`` as
+    Apply :func:`urt_method` to instance methods to temporarily remove the class
+    restriction during the execution of the instance method. For example,
+    suppose we have a class ``a_class``, where
     
     .. code:: python
     
        from touketsu import nondynamic, urt_method
-    
+       
        @nondynamic
        class a_class:
        
            def __init__(self, a = "a"):
                self.a = a
-           
-           @urt_method
-           def a_method(self, val):
-               self.b = val
-
-    Then the following sequence of calls would work perfectly.
-    
-    >>> aa = a_class()
-    >>> aa.a_method(20)
-    >>> aa.b
-    20
-    
-    When applying :func:`urt_class` to a class method, make sure that
-    :func:`urt_class` is applied after :func:`classmethod`, as shown in the
-    example class below.
-    
-    .. code:: python
-    
-       from touketsu import immutable, urt_method
-       
-       class b_class:
-       
-           def __init__(self, b = "b"):
-               self.b = b
                
-           @urt_method
            @classmethod
-           def b_class_method(cls):
-               self.bb = 1000
+           def a_class_method(cls):
+               cls.aa = 1000
+               return cls(a = "A")
+
+           @urt_method
+           def method_one(self, val):
+               self.b = val
+               
+           def method_two(self):
+               if hasattr(self, "b"):
+                   return f"{self.a} UwU {self.b}"
+               return f"{self.a} T^T"
+
+    ``method_one`` needs to be decorated with :func:`urt_method` since it will
+    create an instance attribute ``b`` when called. However, ``method_two``
+    does not need to be decorated since it is not creating, deleting, or
+    modifying any instance attributes. The :func:`classmethod`
+    ``a_class_method`` also does not need to be decorated since ``touketsu``
+    restrictions only apply to class *instances*, not classes themselves.
     
     :param meth: A class or instance method
     :type meth: function or classmethod
@@ -237,19 +211,23 @@ def urt_method(meth):
         modification and creation during its execution.
     :rtype: function
     """
-    # wrapper for the method; note can be class or instance method
+    # wrapper for the method
     @wraps(meth)
     def meth_wrapper(obj, *args, **kwargs):
-        # temporarily unrestrict class/instance
+        # temporarily unrestrict class instance
         restriction = obj._touketsu_restriction
         object.__setattr__(obj, "_touketsu_restriction", None)
         # note try-catch since if an exception is thrown and not caught the
         # restriction will not be reapplied
         try:
             # if classmethod, need to call through __get__
+            """
             if isinstance(meth, classmethod):
                 res = meth.__get__(obj, *args, **kwargs)()
             else: res = meth(obj, *args, **kwargs)
+            """
+            print(type(meth))
+            res = meth(obj, *args, **kwargs)
             # restore original restriction (don't need object.__setattr__)
             obj._touketsu_restriction = restriction
             return res
