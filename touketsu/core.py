@@ -111,7 +111,7 @@ def class_decorator_factory(dectype = None, docmod = None):
 
 
 def urt_class(cls):
-    """Return the original class from a ``touketsu`` decorated class.
+    """Remove the ``touketsu`` restriction from a ``touketsu`` decorated class.
 
     For any class decorated by a decorator returned by 
     :func:`~touketsu.core.class_decorator_factory`, :func:`urt_class` removes
@@ -119,19 +119,23 @@ def urt_class(cls):
     :meth:`.__setattr__` methods.
 
     Useful for removing a ``touketsu`` decorator restriction from a decorated
-    class during runtime.
-
+    class during runtime or a subclass that does not override :meth:`__init__`,
+    which results in a superclass :meth:`__init__` beind used instead according
+    to the method resolution order.
+    
     .. note::
 
        If the class is undecorated, then :func:`urt_class` will have no
        effect.
 
-    .. caution::
+    .. note::
 
        Calling :func:`urt_class` on subclasses of classes decorated by a
        decorator returned from :func:`~touketsu.core.class_decorator_factory`
-       will result in warnings being raised. The decorator restrictions do not
-       persist through the inheritance structure.
+       will result in warnings being raised, as the ``_touketsu_restriction``
+       and ``_touketsu_orig__doc__`` attributes cannot be deleted from the
+       subclass, as they are superclass attributes. These warnings can be
+       safely ignored, however.
 
     :param cls: Class decorated by a decorator returned from 
         :func:`~touketsu.core.class_decorator_factory`
