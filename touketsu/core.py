@@ -229,6 +229,9 @@ def urt_method(meth):
             obj._touketsu_restriction = restriction
             raise e
 
+    # make it identifiable as an urt_method
+    meth_wrapper.is_urt_method = True
+
     return meth_wrapper
 
 
