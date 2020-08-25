@@ -1,10 +1,11 @@
 __doc__ = "Some test classes for testing ``touketsu`` functions."
 
+from abc import ABCMeta, abstractmethod
 import math
 from random import Random
 import sys
 
-from ..core import immutable, nondynamic, orig_init, urt_method
+from ..core import immutable, nondynamic, orig_init, urt_class, urt_method
 from . import srepr, vrepr
 
 _global_random_state = Random()
@@ -20,7 +21,7 @@ https://github.com/python/cpython/blob/3.8/Lib/random.py.
 @immutable
 @vrepr
 class a_class:
-    """Docstring for ``a_class``.
+    """Test class whose methods can create and delete instance/class attributes.
     
     :param a: Parameter ``a``
     """
@@ -114,7 +115,7 @@ class a_class:
 @vrepr
 @nondynamic
 class b_class:
-    """Docstring for ``b_class``.
+    """Test class with stochastic static method and stochastic class method.
     
     :param b: Parameter ``b``
     """
@@ -224,7 +225,7 @@ class b_class:
 # note that __repr__ is inherited from a_class due to the MRO.
 @immutable
 class c_class(a_class, b_class):
-    """Docstring for ``c_class``.
+    """Test class that modifies existing instance attributes.
     
     :param a: Parameter ``a``
     :param b: Parameter ``b``
@@ -266,6 +267,85 @@ class c_class(a_class, b_class):
     def make_c_clean(self):
         "Sets :attr:`c_is_dirty` to ``False``."
         self.c_is_dirty = False
+
+@immutable
+@vrepr
+class an_abc(metaclass = ABCMeta):
+    """Class type :class:`abc.ABCMeta` with an abstact method.
+    
+    :param a: Parameter ``a``
+    """
+    def __init__(self, a = "_a"): self.a = a
+
+    @abstractmethod
+    def random_touch_ab(self): pass
+
+
+def _random_touch_ab(self, random_state = None):
+    """Randomly assigns ``a`` and ``b`` attributes values in ``[0, 1)``.
+    
+    Not decorated with :func:`~touketsu.core.urt_method`, so will fail.
+    
+    :param random_state: A shared :class:`random.Random` instance or an
+        integer seed for :attr:`_global_random_state`, default ``None``
+        to use :attr:`_global_random_state` without seeding.
+    :type random_state: :class:`random.Random` or int, optional
+    """
+    # random.Random to use
+    rr = _global_random_state
+    # if random_state is int, see _global_random_state. if random_state is
+    # a random.Random instance, use its existing state.
+    if random_state is None: pass
+    elif isinstance(random_state, int):
+        _global_random_state.seed(a = random_state)
+    elif isinstance(random_state, Random): rr = random_state
+    else: raise TypeError("random_state must be int or random.Random")
+    # randomly assign values
+    self.a = rr.random()
+    self.b = rr.random()
+
+
+class abc_child_a(an_abc):
+    """Subclass of :class:`an_abc`. Inherits ``touketsu`` restriction.
+    
+    Restriction inherited due to no :meth:`__init__` override.
+    """
+    def random_touch_ab(self, random_state = None):
+        """Wraps :func:`_random_touch_ab`.
+        
+        Not wrapped with :func:`~touketsu.core.urt_method`, so will fail.
+        
+        See :func:`_random_touch_ab` for method details.
+        """
+        return _random_touch_ab(self, random_state = random_state)
+    
+    @urt_method
+    def random_touch_ab_urt(self, random_state = None):
+        """Wraps :func:`_random_touch_ab`.
+        
+        Succeeds since it is wrapped with :func:`~touketsu.core.urt_method`.
+        
+        See :func:`_random_touch_ab` for method details.
+        """
+        return _random_touch_ab(self, random_state = random_state)
+
+
+@urt_class
+class abc_child_b(an_abc):
+    """Subclass of :class:`an_abc`. Inherits ``touketsu`` restriction.
+    
+    Inherited restriction due to no :meth:`__init__` override removed with
+    :func:`~touketsu.core.urt_class`.
+    """
+    def random_touch_ab(self, random_state = None):
+        """Wraps :func:`_random_touch_ab`.
+        
+        Succeeds since :class:`abc_child_b` is decorated with
+        :func:~touketsu.core.urt_class`.
+        
+        See :func:`_random_touch_ab` for method details.
+        """
+        return _random_touch_ab(self, random_state = random_state)
 
 
 if __name__ == "__main__": 
