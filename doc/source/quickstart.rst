@@ -120,7 +120,7 @@ Let's define a second class ``b_class`` as follows:
        def __init__(self, b = "b"):
            self.b = b
 
-Suppose we also have classes ``c_class`` and ``A_class``, where
+Suppose we also have classes ``c_class`` and ``A_class`` defined as
 
 .. code:: python
 
@@ -164,8 +164,9 @@ Note that although ``a_class`` is decorated with
 :func:`~touketsu.core.nondynamic`, ``c_class`` is just a normal class. We can
 then in turn decorate ``c_class`` if we want to.
 
-However, the situation is different if the subclass does not override
-:meth:`__init__`. For example, suppose we defined a class ``d_class`` as
+However, the situation is different if the subclass does not override the
+superclass :meth:`__init__` method. For example, suppose we defined a class
+``d_class`` as
 
 .. code:: python
 
@@ -177,8 +178,8 @@ However, the situation is different if the subclass does not override
            self.a = random.random()
            self.b = random.random()
 
-If we were to call its :meth:`~object.mro` method to get the method resolution
-order, we would see something like the following:
+If we called its :meth:`~object.mro` [#]_ method to get the method resolution
+order, we would see
 
 >>> d_class.mro()
 [__main__.d_class,
@@ -196,13 +197,32 @@ calls will end in an :class:`AttributeError` saying that ``d`` is a nondynamic
 class instance.
 
 >>> d = d_class()
->>> d.random_touch()
+>>> d.random_touch_ab()
 
 Our problem is easy to solve, however. To make ``d_class`` instances normal
 class instances, we can simply use the :func:`~touketsu.core.urt_class`
 decorator, which will remove the restriction and make ``d_class`` a normal
 Python class, as its :meth:`__init__` method will be the original
-:meth:`__init__` method of ``a_class``, per the method resolution order.
+:meth:`__init__` method of ``a_class``, per the method resolution order. The
+definition of ``d_class`` would then look like this:
+
+.. code:: python
+
+   import random
+   from touketsu import urt_class
+
+   @urt_class
+   class d_class(a_class, b_class):
+
+       def random_touch_ab(self):
+           self.a = random.random()
+           self.b = random.random()
+
+Note that if we had overriden the ``a_class`` :meth:`__init__` in the definition
+of ``d_class``, then we would not need the :func:`~touketsu.core.urt_class`
+decorator used above.
+
+.. [#] This only works in Python 3 or in Python 2 with new-style classes.
 
 Class and instance methods
 --------------------------

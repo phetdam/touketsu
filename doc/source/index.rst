@@ -19,8 +19,8 @@ Introduction
 instances immutable or unable to dynamically create instance attributes. We will
 refer to the latter as being *nondynamic*.
 
-To get started, read the :doc:`quickstart` guide, which should cover most use
-cases.
+To get started, read the :doc:`quickstart` guide, which should cover most
+comon use cases.
 
 For package details, see the :doc:`api_ref`.
 
