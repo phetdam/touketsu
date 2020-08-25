@@ -111,6 +111,7 @@ class a_class:
         # update self.create_attr_called
         self.create_attr_called = True
 
+
 # note: vrepr/srepr decoration order does not matter
 @vrepr
 @nondynamic
@@ -267,6 +268,7 @@ class c_class(a_class, b_class):
     def make_c_clean(self):
         "Sets :attr:`c_is_dirty` to ``False``."
         self.c_is_dirty = False
+
 
 @immutable
 @vrepr
