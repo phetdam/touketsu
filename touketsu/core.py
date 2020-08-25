@@ -137,8 +137,8 @@ def urt_class(cls):
        subclass, as they are superclass attributes. These warnings can be
        safely ignored, however.
 
-    :param cls: Class decorated by a decorator returned from 
-        :func:`~touketsu.core.class_decorator_factory`
+    :param cls: Class decorated by
+        :func:`~touketsu.core.class_decorator_factory` decorator
     :type cls: type
     :returns: The original class, without decoration
     :rtype: type
