@@ -164,6 +164,45 @@ Note that although ``a_class`` is decorated with
 :func:`~touketsu.core.nondynamic`, ``c_class`` is just a normal class. We can
 then in turn decorate ``c_class`` if we want to.
 
+However, the situation is different if the subclass does not override
+:meth:`__init__`. For example, suppose we defined a class ``d_class`` as
+
+.. code:: python
+
+   import random
+
+   class d_class(a_class, b_class):
+
+       def random_touch_ab(self):
+           self.a = random.random()
+           self.b = random.random()
+
+If we were to call its :meth:`~object.mro` method to get the method resolution
+order, we would see something like the following:
+
+>>> d_class.mro()
+[__main__.d_class,
+ __main__.a_class,
+ __main__.b_class,
+ object]
+
+The upshot is that the :meth:`__init__` and :meth:`__setattr__` methods of
+``d_class`` instances are from ``a_class``, and ``d_class`` inherits the
+nondynamic property of ``a_class``, which was decorated with
+:func:`~touketsu.core.nondynamic`. Note that ``d_class`` instances also do not
+have the ``b`` instance attribute, since that attribute is defined in the
+:meth:`__init__` method of ``b_class``. Therefore, the following sequence of
+calls will end in an :class:`AttributeError` saying that ``d`` is a nondynamic
+class instance.
+
+>>> d = d_class()
+>>> d.random_touch()
+
+Our problem is easy to solve, however. To make ``d_class`` instances normal
+class instances, we can simply use the :func:`~touketsu.core.urt_class`
+decorator, which will remove the restriction and make ``d_class`` a normal
+Python class, as its :meth:`__init__` method will be the original
+:meth:`__init__` method of ``a_class``, per the method resolution order.
 
 Class and instance methods
 --------------------------
