@@ -273,7 +273,7 @@ class c_class(a_class, b_class):
 @immutable
 @vrepr
 class an_abc(metaclass = ABCMeta):
-    """Class type :class:`abc.ABCMeta` with an abstact method.
+    """Class type :class:`abc.ABCMeta` with an abstract method.
     
     :param a: Parameter ``a``
     """
