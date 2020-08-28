@@ -7,6 +7,7 @@ import sys
 
 from ..core import immutable, nondynamic, orig_init, urt_class, urt_method
 from . import srepr, vrepr
+from .utils import almost_one
 
 _global_random_state = Random()
 """Module level :class:`random.Random` instance.
@@ -154,9 +155,13 @@ class b_class:
         # get number of arguments passed to args
         nargs = len(args)
         if nargs == 0: raise ValueError("at least one positional arg required")
-        # get weights if None + check they add up to 1
+        # get weights if None + check they add up to 1 if weights not None
         if weights is None: weights = [1 / nargs for _ in range(nargs)]
-        if sum(weights) != 1: raise ValueError("weights must add up to 1")
+        elif not almost_one(sum(weights)):
+            raise ValueError("weights must add up to 1")
+        # check that number of args equals number of weights
+        if nargs != len(weights):
+            raise ValueError("number of weights must equal number of args")
         # random.Random instance to generate random values with
         rr = _global_random_state
         # if random_state is None, use existing state of _global_random_state
