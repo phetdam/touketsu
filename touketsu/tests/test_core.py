@@ -1,14 +1,21 @@
 __doc__ = "Tests some core features of ``touketsu`` using the test classes."
 
 import pytest
-from random import Random, _inst as _default_random_state
+from random import Random
 import textwrap
 
 from .classes import (a_class, b_class, c_class, an_abc, abc_child_a,
                       abc_child_b, almost_one)
+from .fixtures import _GLOBAL_SEED, global_random_state
 
-_GLOBAL_SEED = 888
-"Seed used for :func:`global_random_state` :class:`random.Random` instance."
+_module_random_state = Random()
+"""Module level :class:`random.Random` instance.
+
+Avoids state issues if other methods outside of this module are modifying the
+state of the module-level :class:`random.Random` instance created upon import of
+the ``random`` module. This instance is the ``_inst`` attribute defined in
+https://github.com/python/cpython/blob/3.8/Lib/random.py.
+"""
 
 ## -- Non-test functions -------------------------------------------------------
 
@@ -24,14 +31,14 @@ def random_weights(n, dist = "uniform", random_state = None):
         ``1``, and ``"lognormal"`` for lognormally distributed weights with
         ``mu = 0`` and ``sigma = 1``.
     :param random_state: Optional :class:`random.Random` instance to use for
-        random number generation. If not provided, the default
-        :class:`random.Random` instance created upon module import is used.
+        random number generation. If not provided, :attr:`_module_random_state`
+        is used.
     :type random_state: :class:`random.Random`, optional
     """
     # check n
     assert isinstance(n, int) and (n > 0)
     # default Random instance created upon module import
-    rr = _default_random_state
+    rr = _module_random_state
     if random_state is None: pass
     elif isinstance(random_state, Random): rr = random_state
     else: raise TypeError("random_state must be None or random.Random instance")
@@ -56,12 +63,6 @@ def random_weights(n, dist = "uniform", random_state = None):
 
 
 ## -- Fixtures -----------------------------------------------------------------
-
-@pytest.fixture(scope = "session", params = [_GLOBAL_SEED])
-def global_random_state(request):
-    "Returns session global :class:`random.Random`, seed :attr:`_GLOBAL_SEED"
-    return Random(request.param)
-
 
 @pytest.fixture(scope = "function")
 def a_class_instance():

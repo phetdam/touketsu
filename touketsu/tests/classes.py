@@ -339,7 +339,7 @@ class abc_child_a(an_abc):
 
 @urt_class
 class abc_child_b(an_abc):
-    """Subclass of :class:`an_abc`. Inherits ``touketsu`` restriction.
+    """Subclass of :class:`an_abc`. Inherited ``touketsu`` restriction removed.
     
     Inherited restriction due to no :meth:`__init__` override removed with
     :func:`~touketsu.core.urt_class`.
