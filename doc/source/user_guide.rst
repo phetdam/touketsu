@@ -1,9 +1,6 @@
-.. quickstart guide for touketsu. sphinx-enabled formatting.
+.. user guide for touketsu. sphinx-enabled formatting.
 
-   see quickstart_plain.rst for the same content, but without sphinx-specific
-   restructuredtext markup.
-
-Quickstart
+User Guide
 ==========
 
 The most commonly used decorators in ``touketsu`` are
