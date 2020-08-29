@@ -160,8 +160,8 @@ methods, returning the original class :meth:`__init__`. Therefore, if we define
 
 Now no :class:`AttributeError` will be thrown when ``c_class()`` is executed.
 Note that although ``a_class`` is decorated with
-:func:`~touketsu.core.immutable` and ``b_class`` is decorated with
-:func:`~touketsu.core.nondynamic`, ``c_class`` is just a normal class. We can
+:func:`~touketsu.core.nondynamic` and ``b_class`` is decorated with
+:func:`~touketsu.core.immutable`, ``c_class`` is just a normal class. We can
 then in turn decorate ``c_class`` if we want to.
 
 However, the situation is different if the subclass does not override the
