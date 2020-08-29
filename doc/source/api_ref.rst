@@ -4,7 +4,7 @@ API Reference
 =============
 
 This page lists the main ``touketsu`` components. Please refer to the
-:doc:`./quickstart` for usage details.
+:doc:`./user_guide` for usage details.
 
 Below we list the main decorators that will be accessed by users.
 
