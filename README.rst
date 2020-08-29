@@ -3,13 +3,13 @@
 .. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/
    touketsu_logo_small.png
 
-.. image:: https://readthedocs.org/projects/touketsu/badge/?version=latest
-   :target: https://touketsu.readthedocs.io/en/latest/
-   :alt: Documentation Status
-
 .. image:: https://img.shields.io/travis/phetdam/touketsu?logo=travis
    :target: https://travis-ci.org/github/phetdam/touketsu
    :alt: Travis (.org)
+
+.. image:: https://readthedocs.org/projects/touketsu/badge/?version=latest
+   :target: https://touketsu.readthedocs.io/en/latest/
+   :alt: Documentation Status
 
 **touketsu** is a tiny package for creating classes that disallow dynamic
 instance attribute creation or modification while preserving class inheritance.
