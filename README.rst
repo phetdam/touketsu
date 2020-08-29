@@ -33,8 +33,8 @@ Install from source by simply ``cd``\ ing to a preferred directory and typing
    make install
 
 This will perform a user install by default. If you have a virtual environment
-activated, you may perform a root install by replacing ``make install`` with
-``make root_install``.
+activated, you may perform a root install by replacing the ``make install``
+command with ``make root_install``.
 
 After installing, check that the package is properly working using the
 interpreter, for example
