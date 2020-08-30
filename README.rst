@@ -1,7 +1,7 @@
 .. README for touketsu package
 
-.. image:: https://github.com/phetdam/touketsu/blob/master/doc/source/_static/
-   touketsu_logo_small.png
+.. image:: https://raw.githubusercontent.com/phetdam/touketsu/master/doc/source/
+   _static/touketsu_logo_small.png
 
 .. image:: https://img.shields.io/travis/phetdam/touketsu?logo=travis
    :target: https://travis-ci.org/github/phetdam/touketsu
