@@ -15,11 +15,11 @@ before_install:
   - pip3 install --upgrade pip
   - pip3 install --upgrade pytest
 
-# install from setup.py and from test pypu
-install:
+# install from setup.py (latest) and test pypi (latest test release)
+jobs:
   # by default, this is a root install [into a venv]
-  - make install
-  - pip3 install --index-url https://test.pypi.org/simple/ touketsu
+  - install: make install
+  - install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
 
 # run tests
 script: pytest
