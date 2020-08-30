@@ -10,11 +10,12 @@ SETUP_FLAGS =
 dummy:
 	@echo "Please specify a target to build."
 
-# removes emacs autosave files and local build + dist directories
+# removes emacs autosave files and local build, dist, and egg-info directories
 clean:
 	@rm -vf *~
 	@rm -vrf ./build
 	@rm -vrf ./dist
+	@rm -vrf ./touketsu.egg-info
 
 # build touketsu package
 build:
