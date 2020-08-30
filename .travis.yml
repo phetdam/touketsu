@@ -16,17 +16,8 @@ before_install:
   - pip3 install --upgrade pip
   - pip3 install --upgrade pytest
 
-# install from setup.py (latest) into venv
-install: make install
-
-# additional jobs that install from test pypi (latest test release)
-jobs:
-  - python: 3.6
-    install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
-  - python: 3.7
-    install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
-  - python: 3.8
-    install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
+# no dependencies
+install: skip
 
 # run tests
 script: pytest
