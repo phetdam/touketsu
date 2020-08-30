@@ -15,9 +15,9 @@ before_install:
   - pip3 install --upgrade pip
   - pip3 install --upgrade pytest
 
-# install with setup.py (not on PyPI yet)
-# looks scary, but is really python3 setup.py install in venv
-install: make root_install
+# install with setup.py
+# by default, this is a root install [into a venv]
+install: make install
 
 # run tests
 script: pytest
