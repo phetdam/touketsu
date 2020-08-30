@@ -3,9 +3,9 @@
 .. image:: https://raw.githubusercontent.com/phetdam/touketsu/master/doc/source/
    _static/touketsu_logo_small.png
 
-.. image:: https://badge.fury.io/py/touketsu.svg
-   :target: https://badge.fury.io/py/touketsu
-   :alt: PyPI version
+.. image:: https://img.shields.io/pypi/v/touketsu
+   :target: https://pypi.org/project/touketsu/
+   :alt: PyPI
 
 .. image:: https://img.shields.io/travis/phetdam/touketsu?logo=travis
    :target: https://travis-ci.org/github/phetdam/touketsu
