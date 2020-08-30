@@ -5,7 +5,7 @@ CFLAGS      =
 PYTHON      = python3
 SETUP_FLAGS = 
 
-.PHONY: dummy clean build dist install
+.PHONY: dummy clean build dist
 
 dummy:
 	@echo "Please specify a target to build."
@@ -24,11 +24,22 @@ build:
 dist:
 	@$(PYTHON) setup.py sdist bdist_wheel
 
+# perform root install by default (intended for use with venv)
+install: install_root
+
 # user install in site-packages directory for importing. builds if necessary.
 # under ubuntu, you will need to manually remove zipped egg to uninstall.
-install: build
+install_user: build
 	@$(PYTHON) setup.py install --user
 
-# install to root; don't use unless absolutely necessary!
-root_install: build
+# install to root; don't use unless you have a venv set up!
+install_root: build
 	@$(PYTHON) setup.py install
+
+# upload dist to testpypi
+upload_test: dist
+	@twine upload --repository testpypi dist/*
+
+# upload dist to pypi
+upload: dist
+	@twine upload dist/*
