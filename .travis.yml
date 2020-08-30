@@ -27,7 +27,7 @@ deploy:
   provider: pypi
   username: __token__
   password:
-    secure: pypi-AgENdGVzdC5weXBpLm9yZwIkZTExMGUzOGMtZjRmNS00MDBjLTkwNzQtZGI4YTNhNTQzMWMzAAIleyJwZXJtaXNzaW9ucyI6ICJ1c2VyIiwgInZlcnNpb24iOiAxfQAABiB4w3dl3EcXZerr2uvl1j4MHsAUR40ozeKQtsqcI52VcQ
-  server: https://test.pypi.org/simple/
-  distribution: sdist bdist_wheel
+    secure: IeNTmMVqhAbVaKh7TlH/cEDOyJCe8bNOn/aZakUMCOioTJYlZNTzTRC1iDqkEb+i4Tp1HcqwXqKIz2lAvg6/05BBK6VkO+1V+UOHJEB8qFN/E1i7bxWGf1K6OWQOENxs7tBmcXEKAphTmUdDNiohawKWE9lJQ7gmpHb1eUhr1ln4luFn1xUoNqaK3haVygFicBRbYJQ1fRPcRhroXNa2w8caBogbwQOX2NuM1hIou3eFeLZWrfNatR2HR6aQTy63H3fU7XZxw55G2zelJuzHe/mJmS5/uu1lpuiq7N/pwRWaLEVJopMfj1e4/CfapqYpahfwJpp9rhHsFWM3h6PVc4AyCtAfzaTDgEbKU75otKJY+E4ke20IvwGkDwdwF7NmgdLkRQHDVm/HJj71zGxB+cAV9qn9qeE+Nb3NjRMt8zfdCM8BY2PA02SNURY0dR/xBb/89EjdV9y5JkjSn9cucjZL0DgTflGn6bo87v97XxTIpz7vT+hp6bNPn9fyA6AFoVuKPh4G896y6RlqWbfwk5kS9W3kI50LamHl8nsYOtYZyd/Ds7hE6FV0GlEwegTs86tQmE8QPQKubu8lWh5bViKFCxKP65IH1wljgKA1oenrD58bpvdpOaD/PWcZHrhvKjHtO920/LLADYow4j2zMVrawlZ1thZe67Dr4wzC85s=
+  server: https://test.pypi.org/legacy/
+  distributions: sdist bdist_wheel
   skip_existing: true
