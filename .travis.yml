@@ -29,5 +29,5 @@ deploy:
   password:
     secure: pypi-AgENdGVzdC5weXBpLm9yZwIkZTExMGUzOGMtZjRmNS00MDBjLTkwNzQtZGI4YTNhNTQzMWMzAAIleyJwZXJtaXNzaW9ucyI6ICJ1c2VyIiwgInZlcnNpb24iOiAxfQAABiB4w3dl3EcXZerr2uvl1j4MHsAUR40ozeKQtsqcI52VcQ
   server: https://test.pypi.org/legacy/
-  distributions: sdist bdist_wheel
+  distribution: sdist bdist_wheel
   skip_existing: true
