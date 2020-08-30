@@ -1,12 +1,9 @@
 language: python
 
-# test a few python versions
-python:
-  - 3.6
-  - 3.7
-  - 3.8
+# no top-level python key, put that with jobs
 
 # ubuntu bionic (18.04)
+os: linux
 dist: bionic
 
 # pre-install commands
@@ -18,8 +15,16 @@ before_install:
 # install from setup.py (latest) and test pypi (latest test release)
 jobs:
   # by default, this is a root install [into a venv]
-  - install: make install
-  - install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
+  - python:
+    - 3.6
+    - 3.7
+    - 3.8
+    install: make install
+  - python:
+    - 3.6
+    - 3.7
+    - 3.8
+    install: pip3 install --index-url https://test.pypi.org/simple/ touketsu
 
 # run tests
 script: pytest
