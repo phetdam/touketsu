@@ -25,16 +25,27 @@ Installation
   Package is not on PyPI yet, but once it is, you can expect to simply use 
   ``pip`` to install.
 
-Install from source by simply ``cd``\ ing to a preferred directory and typing
+Currently, only installing from source is available. On \*nix machines, the
+recommended method is to activate a `virtual environment`__, ``cd`` to a
+preferred directory, and then type
 
 .. code:: bash
 
    git clone https://github.com/phetdam/touketsu
    make install
 
-This will perform a user install by default. If you have a virtual environment
-activated, you may perform a root install by replacing the ``make install``
-command with ``make root_install``.
+.. __: https://docs.python.org/3/tutorial/venv.html
+
+User installation without an activated virtual environment can be performed by
+replacing ``make install`` with ``make install_user``. On Windows, install in
+an activated virtual environment with
+
+.. code:: bat
+
+   git clone https://github.com/phetdam/touketsu
+   python setup.py install
+
+Perform a user install with ``python setup.py install --user``.
 
 After installing, check that the package is properly working using the
 interpreter, for example
