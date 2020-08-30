@@ -24,14 +24,14 @@ modification of an existing instance attribute.
 Installation
 ------------
 
-  Note:
+On all systems, install the latest version from PyPI with
 
-  Package is not on PyPI yet, but once it is, you can expect to simply use 
-  ``pip`` to install.
+.. code:: bash
 
-Currently, only installing from source is available. On \*nix machines, the
-recommended method is to activate a `virtual environment`__, ``cd`` to a
-preferred directory, and then type
+   pip3 install --upgrade touketsu
+
+On \*nix machines, the recommended method is to activate a
+`virtual environment`__, ``cd`` to a directory, and then type
 
 .. code:: bash
 
