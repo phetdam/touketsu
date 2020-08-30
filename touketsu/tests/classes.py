@@ -51,7 +51,9 @@ class a_class:
         :type random_state: :class:`random.Random` or int, optional
         """
         val = None
-        if hasattr(cls, "aa"): delattr(cls, "aa")
+        if hasattr(cls, "aa"):
+            delattr(cls, "aa")
+            return None
         else:
             # use existing _global_random_state
             if random_state is None:
@@ -96,7 +98,7 @@ class a_class:
         :type random_state: :class:`random.Random` or int, optional
         :rtype: None
         """
-        if attr is self.__dict__:
+        if attr in self.__dict__:
             raise KeyError(f"attribute {attr} already exists")
         # if None, use current state of _global_random_state
         if random_state is None:
