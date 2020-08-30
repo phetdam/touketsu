@@ -22,6 +22,11 @@ install: skip
 # run tests
 script: pytest
 
+# before deployment, update setuptools and wheel
+before_deploy:
+  - pip3 install --upgrade setuptools
+  - pip3 install --upgrade wheel
+
 # conditional deployment
 deploy:
   # deploy to test pypi index only if DEPLOY_DRY file is present
