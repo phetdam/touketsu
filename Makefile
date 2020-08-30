@@ -35,11 +35,3 @@ install_user: build
 # install to root; don't use unless you have a venv set up!
 install_root: build
 	@$(PYTHON) setup.py install
-
-# upload dist to testpypi
-upload_test: dist
-	@twine upload --repository testpypi dist/*
-
-# upload dist to pypi
-upload: dist
-	@twine upload dist/*
