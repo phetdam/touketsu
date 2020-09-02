@@ -118,8 +118,8 @@ def test_aa_deletion(a_class_instance, global_random_state, n_calls = 4):
     """Test :meth:`touketsu.tests.classes.a_class.random_aa` ``aa`` deletion.
     
     Call :meth:`~touketsu.tests.classes.a_class.random_aa` an even number of
-    times to determine if class attribute deletion is working fine. On failure,
-    also prints the values assigned to ``aa`` on odd-numbered invocations and
+    times to determine if class attribute deletion is working fine. Also prints
+    the values assigned to ``aa`` on odd-numbered invocations and
     the :class:`random.Random` seed used.
     
     :param a_class_instance: :func:`a_class_instance` ``pytest`` fixture.
@@ -209,7 +209,7 @@ def test_random_member_avg(b_class_instances, global_random_state, wopt):
     _class = b_class_instances[0].__class__
     ravg = _class.random_member_avg(*b_class_instances, weights = weights,
                                     random_state = global_random_state)
-    print("ravg = {ravg}")
+    print(f"ravg = {ravg}")
     # test to see if it worked
     assert isinstance(ravg, (int, float))
 
