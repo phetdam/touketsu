@@ -7,6 +7,14 @@
    :target: https://pypi.org/project/touketsu/
    :alt: PyPI
 
+.. image:: https://img.shields.io/pypi/wheel/touketsu
+   :target: https://pypi.org/project/touketsu/
+   :alt: PyPI - Wheel
+
+.. image:: https://img.shields.io/pypi/pyversions/touketsu
+   :target: https://pypi.org/project/touketsu/
+   :alt: PyPI - Python Version
+
 .. image:: https://img.shields.io/travis/phetdam/touketsu?logo=travis
    :target: https://travis-ci.org/github/phetdam/touketsu
    :alt: Travis (.org)
