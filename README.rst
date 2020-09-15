@@ -15,9 +15,9 @@
    :target: https://pypi.org/project/touketsu/
    :alt: PyPI - Python Version
 
-.. image:: https://img.shields.io/travis/phetdam/touketsu?logo=travis
-   :target: https://travis-ci.org/github/phetdam/touketsu
-   :alt: Travis (.org)
+.. image:: https://img.shields.io/travis/com/phetdam/touketsu?logo=travis
+   :target: https://travis-ci.com/github/phetdam/touketsu
+   :alt: Travis (.com)
 
 .. image:: https://readthedocs.org/projects/touketsu/badge/?version=latest
    :target: https://touketsu.readthedocs.io/en/latest/
