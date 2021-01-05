@@ -63,3 +63,15 @@ The documentation for ``touketsu`` is hosted on Read the Docs here__.
 
 .. __: https://touketsu.readthedocs.io/en/latest/
 
+Unit tests
+----------
+
+Running the unit tests requires that `pytest`__ be installed. After cloning the
+repository with ``git clone`` and installing ``pytest`` with
+``pip3 install pytest``, ``cd`` to the repository root and just run
+
+.. code:: bash
+
+   pytest
+
+.. __: https://docs.pytest.org/en/stable/
