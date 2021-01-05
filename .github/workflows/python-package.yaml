@@ -29,7 +29,7 @@ jobs:
   # conditional deployment; unit tests must be done first
   deploy:
     runs-on: ubuntu-18.04
-    needs: run_unit_tests
+    needs: test
     if: ${{ false }}    # don't do anything for now
     steps:
     - name: dummy
