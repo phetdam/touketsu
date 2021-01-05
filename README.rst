@@ -19,6 +19,10 @@
    :target: https://travis-ci.com/github/phetdam/touketsu
    :alt: Travis (.com)
 
+.. image:: https://github.com/phetdam/touketsu/workflows/build/badge.svg
+   :target: https://github.com/phetdam/touketsu/actions
+   :alt: GitHub build
+
 .. image:: https://readthedocs.org/projects/touketsu/badge/?version=latest
    :target: https://touketsu.readthedocs.io/en/latest/
    :alt: Documentation Status
