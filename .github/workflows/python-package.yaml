@@ -1,0 +1,41 @@
+# used the same file name as the default python package workflow template
+
+name: touketsu_test_and_deploy
+
+on: push
+
+jobs:
+  # run unit tests
+  run_unit_tests:
+    # maybe add more OSes later?
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        # python versions to use during python setup
+        python_version: [3.6, 3.8]
+    steps:
+    # need to checkout repo so that we have access to $GITHUB_WORKSPACE and also
+    # set up the specific python version that we are testing the code with
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python_version }}
+    - name: Echo Python version + upgrade pip and pytest
+      run: |
+        python3 --version
+        pip3 install --upgrade pip
+        pip3 install --upgrade pytest
+    - name: Install dependencies
+      run: echo "no dependencies to install"
+    - id: xx74hf # i'll probably delete this later
+      name: Run units tests with pytest # testing what the name actually does
+      run: pytest
+  # conditional deployment; unit tests must be done first
+  pypi_deploy:
+    runs-on: ubuntu-18.04
+    needs: run_unit_tests
+    if: ${{ false }}    # don't do anything for now
+    steps:
+    - name: dummy
+      run: echo "this should not trigger after run_unit_tests"
+    
