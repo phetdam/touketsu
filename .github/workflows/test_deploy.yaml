@@ -5,7 +5,7 @@ on: workflow_dispatch
 
 jobs:
   # deploy only after unit tests have all been passed!
-  deploy:
+  test_deploy:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
       run: python3 setup.py sdist bdist_wheel
     # since skip_existing is false by default, remember to bump versions!
     - name: Upload source and binary distributions to Test PyPI
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@v1.4.1
       with:
         user: __token__
         password: ${{ secrets.LOCAL_TESTPYPI_TOKEN }}
