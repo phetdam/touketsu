@@ -1,0 +1,27 @@
+# deploy to test PyPI for test purposes
+name: test_deploy
+
+on: workflow_dispatch
+
+jobs:
+  # deploy only after unit tests have all been passed!
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Echo Python version + upgrade pip, setuptools, wheel, twine
+      run: |
+        python3 --version
+        pip3 install --upgrade pip
+        pip3 install --upgrade setuptools wheel twine
+    - name: Create source and binary distributions using setup.py
+      run: python3 setup.py sdist bdist_wheel
+    # since skip_existing is false by default, remember to bump versions!
+    - name: Upload source and binary distributions to Test PyPI
+      uses: pypa/gh-action-pypi-publish@master
+        user: __token__
+        password: ${{ secrets.LOCAL_TESTPYPI_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/

@@ -26,11 +26,3 @@ jobs:
         pip3 install --upgrade pytest
     - name: Run unit tests with pytest
       run: pytest
-  # conditional deployment; unit tests must be done first
-  deploy:
-    runs-on: ubuntu-18.04
-    needs: test
-    if: ${{ false }}    # don't do anything for now
-    steps:
-    - name: dummy
-      run: echo "this should not trigger after run_unit_tests"
