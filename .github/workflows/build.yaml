@@ -22,8 +22,6 @@ jobs:
     - name: Echo Python version + upgrade pip and pytest
       run: |
         python3 --version
-        pwd
-        echo $GITHUB_WORKSPACE
         pip3 install --upgrade pip
         pip3 install --upgrade pytest
     - name: Run unit tests with pytest
