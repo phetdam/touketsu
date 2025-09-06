@@ -5,21 +5,23 @@ on: workflow_dispatch
 jobs:
   # deploy only after unit tests have all been passed!
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v5
+    - uses: actions/setup-python@v6
+      # note: Python version doesn't matter (package is pure Python)
       with:
-        python-version: 3.8
+        python-version: 3.13
     - name: Echo Python version + upgrade pip, setuptools, wheel, twine
       run: |
-        python3 --version
-        pip3 install --upgrade pip
-        pip3 install --upgrade setuptools wheel twine
+        python --version
+        pip install --upgrade pip
+        pip install --upgrade setuptools wheel twine
     - name: Create source and binary distributions using setup.py
-      run: python3 setup.py sdist bdist_wheel
+      # note: setup.py deprecated
+      run: python setup.py sdist bdist_wheel
     - name: Upload source and binary distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.4.1
+      uses: pypa/gh-action-pypi-publish@v1.13.0
       with:
         user: __token__
         password: ${{ secrets.LOCAL_PYPI_TOKEN }}
