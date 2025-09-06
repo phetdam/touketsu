@@ -21,7 +21,7 @@ jobs:
       run: python3 setup.py sdist bdist_wheel
     # since skip_existing is false by default, remember to bump versions!
     - name: Upload source and binary distributions to Test PyPI
-      uses: pypa/gh-action-pypi-publish@v1.4.1
+      uses: pypa/gh-action-pypi-publish@v1.13.0
       with:
         user: __token__
         password: ${{ secrets.LOCAL_TESTPYPI_TOKEN }}
